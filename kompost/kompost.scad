@@ -5,10 +5,10 @@ bas_y = 55;
 bas_z = 11;
 rod_h = 30;
 
-rod_hole = 12;
+rod_hole = 13;
 rod_d = 28;
-rod_hole_x = 20;
-rod_hole_x2 = 13;
+rod_hole_x = 21;
+rod_hole_x2 = 14;
 clips = 3.5;
 wall = 2;
 y_clip = 20;
@@ -57,7 +57,7 @@ union() {
         
         //luftning
         translate([(bas_x-rod_hole_x2)/2,-bas_y+rygg,-1]) cube([rod_hole_x2,bas_y,100]);
-        translate([wall,rygg+wall,-1]) cube([bas_x-wall*2,y_clip-wall*2-rygg,bas_z*2]);
+        translate([wall,rygg+wall,-2]) cube([bas_x-wall*2,y_clip-wall*2-rygg,bas_z*2]);
         translate([wall,rygg+wall,-1]) cube([bas_x-wall*2,y_clip-wall*2-rygg-wall,bas_z*2+wall/2]);
         
         //luftning vid hålet
