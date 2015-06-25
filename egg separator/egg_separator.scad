@@ -23,7 +23,7 @@ difference(){
     union() {
         sphere(d=ball_d, $fn=60);
         translate([-shaft_s, -shaft_w/2, 0]) roundedcube(shaft, shaft_w, shaft_h, 3 );
-        translate([-shaft_s, -shaft_w/2, shaft_h]) roundedcube(klack+1, shaft_w, shaft_h, 3 );
+        translate([-shaft_s, -shaft_w/2, shaft_h]) roundedcube(klack+1, shaft_w, shaft_h*2, 3 );
     }
     
     slask = 300;
