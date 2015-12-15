@@ -45,16 +45,23 @@ ex_y = 0;
 //%ex_fan();
 //%e3d_cut();
 
-//%translate([ex_x,-10,-52]) rotate([0,0,-90]) import("RightLongDuct.STL", convexity=10);
+%translate([ex_x+5,25,-20]) rotate([0,0,-90]) import("RightLongDuct.STL", convexity=10);
+
+
+%translate([ex_x+5,-22,-20]) rotate([0,0,90]) import("LeftDuct.STL", convexity=10);
 
 %translate([0,-30,0]) rotate([0,0,90])import("head.stl", convexity=10);
 
 mainblock();
+
+%translate([ex_x*2,0,0]) rotate([0,0,180])clamp();
+
+
 module mainblock() {
     //Main block
     union() {
         translate([ex_x,ex_y,ex_height]) fanholder();
-    
+        translate([ex_x,-ex_y,ex_height]) fanholder2();
         difference() {
             translate([0,-cube_y/2,43-cube_z]) cube([cube_x,cube_y,cube_z]);
             
@@ -77,7 +84,7 @@ module mainblock() {
         }
 }
 
-translate([ex_x*2,0,0]) rotate([0,0,180])clamp();
+
 module clamp() {
     //clamp
     difference() {
@@ -105,17 +112,59 @@ module clamp() {
 
 module fanholder() {
     
-    x = 30;
-    y = 5;
+    
     z = 15;
     
-    zoff = -10;
+    pos_x = 10;
+    pos_y = 10;
+    pos_z = 10;
+    
+    screw_d = 3;
+    screw_wall = screw_d + 4;
+    screw_z = 5;
+    
+    zoff = 0;
     
     translate([-ex_x,cube_y/2,-z+zoff]) difference() {
-        union() {
-            cube([ex_x-1,y,z]);
-            translate([0,2,0]) cube([x,y,z]);
+        hull() {
+            cube([5,10,10]);
+            
+            translate([12,13,-4]) rotate([90,0,0]) cylinder(d=screw_wall, h = screw_z, $fn = fn);
+            translate([20,13,-4]) rotate([90,0,0]) cylinder(d=screw_wall, h = screw_z, $fn = fn);
+            //translate([0,-6.1]) cube([ex_x-1,y+6,z]);
+            //translate([0,2,0]) cube([x,y,z-5]);
         }
+        translate([12,13,-4]) rotate([90,0,0]) cylinder(d=screw_d, h = screw_z*2, $fn = fn);
+        translate([20,13,-4]) rotate([90,0,0]) cylinder(d=screw_d, h = screw_z*2, $fn = fn);
+    }
+}
+module fanholder2() {
+    
+    y=3;
+    
+    z = 15;
+    
+    pos_x = 10;
+    pos_y = -2;
+    pos_z = 10;
+    
+    screw_d = 3;
+    screw_wall = screw_d + 4;
+    screw_z = 3;
+    
+    zoff = 0;
+    
+    translate([-ex_x,-cube_y/2-y,-z+zoff]) difference() {
+        hull() {
+            cube([5,y,10]);
+            
+            translate([12,-pos_y,-4]) rotate([90,0,0]) cylinder(d=screw_wall, h = screw_z, $fn = fn);
+            translate([20,-pos_y,-4]) rotate([90,0,0]) cylinder(d=screw_wall, h = screw_z, $fn = fn);
+            //translate([0,-6.1]) cube([ex_x-1,y+6,z]);
+            //translate([0,2,0]) cube([x,y,z-5]);
+        }
+        translate([12,-pos_y,-4]) rotate([90,0,0]) cylinder(d=screw_d, h = screw_z*2, $fn = fn);
+        translate([20,-pos_y,-4]) rotate([90,0,0]) cylinder(d=screw_d, h = screw_z*2, $fn = fn);
     }
 }
 
