@@ -4,7 +4,7 @@ c_h = 25;
 extra_h = 5;
 
 module bearing() {
-    extra = 1;
+    extra = 0.5;
     d=8+extra;
     D1= 16 +extra;
     Df = 18 +extra;

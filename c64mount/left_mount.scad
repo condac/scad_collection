@@ -34,13 +34,26 @@ module b_plate() {
         
         // Angle cut
         translate([b_plate_l,-1,s_plate_w]) rotate([0,-55,0]) cube(100);
+        
+        //Material saving
+        translate([25,b_plate_w+1,10]) rotate([90,0,0]) cylinder(d=12, h=b_plate_w+2, $fn=hole_res);
     }
 }
 
-module u_plate() {
+module u_plate(t=true) {
     difference() {
         r3_cube(u_plate_l, u_plate_w, u_plate_h,1);
-        translate([u_plate_l/2,3,u_plate_h/2]) rotate([0,180,0]) rotate([0,90,90]) linear_extrude(height=2) oshw_logo_2d(25);
+        translate([u_plate_l/2+3,3.6,u_plate_h/3.5]) rotate([0,180,0]) rotate([0,90,90]) linear_extrude(height=1) oshw_logo_2d(22);
+        
+        //small hole
+        translate([27,b_plate_w+1,50]) rotate([90,0,0]) cylinder(d=screw_hole_d, h=b_plate_w+2, $fn=hole_res);
+        
+        //material saver
+        translate([-2,u_plate_w,30]) rotate([90,0,0]) r_cube(22,30,u_plate_w,2);
+        translate([4,u_plate_w,5]) rotate([90,0,0]) r_cube(5,20,u_plate_w,2);
+    }
+    if (t) {
+        translate([u_plate_l-2,0,5])r3_cube(2, u_plate_w+2, u_plate_h-10,1);
     }
 }
 
@@ -48,9 +61,11 @@ module s_plate() {
     difference() {
         hull() {
             translate([0,0,0]) rotate([0,0,0]) b_plate();
-            translate([15,18,0]) rotate([0,0,angle]) u_plate();
+            translate([15,18,0]) rotate([0,0,angle]) u_plate(t=false);
         }
         translate([-1,-1,s_plate_w])cube(100);
+        translate([18,12,-1]) cylinder(r=6, h=s_plate_w+2, $fn=hole_res);
+        translate([18*2,12,-1]) cylinder(r=6, h=s_plate_w+2, $fn=hole_res);
     }
 }
 
