@@ -17,6 +17,11 @@ bearing_d = 22;
 bearing_h = 7;
 bearing_extra = 0.1;
 
+coupler_length = 25;
+coupler_d = 19;
+
+nema_shaft = 24;
+
 xy_rod_d = 8;
 small_rod_d = 8;
 
@@ -24,20 +29,153 @@ rod_ws = 30;
 
 fn = 32;
 
+// Parts you need to print
+//rotate([0,-90,0]) mirror([0,1,0]) mount1(); // 2pcs
+//rotate([0,-90,0]) mirror([0,0,0]) mount1(); // 2pcs
+// rotate([0,-90,0]) xmotor(); // 1pcs
+// rotate([0,90,0]) ymotor(); // 1pcs
+ // 4pcs https://www.youmagine.com/designs/open-xy-blocks-with-adjustable-belt-tension-for-original-ultimaker-8mm-gantry-rods
+
+
+p_x = 350;
+p_y = 350;
+//translate([-p_x/2, -p_y/2,0]) %cube([p_x,p_y,10]);
+
+//visual();
+module visual() {
+    
+//Parts for visual:
+
 color("green") %woodbox();
 color("cyan") %small_rods();
 color("cyan") %rods();
 color("orange") %belts();
+color("cyan") translate([box_x/2-rod_ws, -box_y/2-wood_t-nema_shaft, rod_h-rod_space]) %nema17();
+color("blue") translate([box_x/2-rod_ws, -box_y/2-wood_t-coupler_length/2, rod_h-rod_space]) %coupler();
 
-color("red")translate([-box_x/2,box_y/2,0])rotate([0,0,-90]) mirror([0,1,0]) mount1();
-color("red")translate([box_x/2,box_y/2,0]) rotate([0,0,-90]) mirror([0,0,0]) mount1();
-//color("red")translate([box_x/2,-box_y/2+wood_t,0])rotate([0,0,90]) mirror([0,1,0]) mount1();
-color("red")translate([-box_x/2,-box_y/2,0]) rotate([0,0,90]) mirror([0,0,0]) mount1();
+color("cyan") translate([box_x/2+wood_t+nema_shaft, -box_y/2+rod_ws, rod_h]) rotate([0,0,90]) %nema17();
+color("blue") translate([box_x/2+wood_t+coupler_length/2, -box_y/2+rod_ws, rod_h]) rotate([0,0,90]) %coupler();
+
+
+color("red")translate([-box_x/2,box_y/2,0])rotate([0,0,-90]) mirror([0,1,0]) %mount1();
+color("red")translate([box_x/2,box_y/2,0]) rotate([0,0,-90]) mirror([0,0,0]) %mount1();
+color("red")translate([box_x/2,-box_y/2,0])rotate([0,0,90]) mirror([0,1,0]) %mount1();
+color("red")translate([-box_x/2,-box_y/2,0]) rotate([0,0,90]) mirror([0,0,0]) %mount1();
+
+color("red")translate([box_x/2-rod_ws-20-20,-box_y/2-wood_t,0]) %xmotor();
+color("red")translate([box_x/2+wood_t,-box_y/2+rod_ws+20+20,0]) rotate([0,0,90]) %ymotor();
+}
+module xmotor() {
+    x = 20;
+    h = 55;
+    wall = 5;
+    b_wall = 5;
+    m_wall = 8;
+    b_h = 12;
+    nema_screw_dist = 31.04;
+    nema_xy = 42;
+    
+    motor_offset = 40;
+    
+    difference() {
+        union() {
+            translate([0,-wall,-h])cube([x,wood_t+wall*2, h+wall ]);
+            translate([motor_offset-nema_xy/2,-nema_shaft,rod_h-rod_space-nema_xy/2]) cube([nema_xy,m_wall,nema_xy]);
+            
+            
+            
+            
+            translate([0,-nema_shaft,rod_h-rod_space-nema_xy/2]) cube([x,nema_shaft,nema_xy]);
+        }
+        translate([0,0,-h]) cube([x,wood_t, h]);
+        
+        // Round cut for motor circle
+        hull() {
+                translate([motor_offset,-nema_shaft-1,rod_h-rod_space]) rotate([-90,0,0]) cylinder(d=23, h=m_wall+2, $fn=fn);
+                translate([motor_offset+nema_xy,-nema_shaft-1,rod_h-rod_space]) rotate([-90,0,0])cylinder(d=23, h=m_wall+2, $fn=fn);
+        }
+        
+        //M3 mounting screws
+        translate([x/2,-wall-nema_shaft,-h/4])rotate([-90,0,0])cylinder(d=3.1, h= x*2+nema_shaft, $fn=fn);
+        translate([x/2,-wall-nema_shaft,-h+8])rotate([-90,0,0])cylinder(d=3.1, h= x*2+nema_shaft, $fn=fn);
+        
+        translate([x/2,-nema_shaft,-h/4])rotate([-90,0,0]) cylinder(d=9, h= nema_shaft-wall, $fn=fn);
+        
+        //Motor mount screw
+        translate([motor_offset+nema_screw_dist/2, -nema_shaft,rod_h-rod_space+nema_screw_dist/2]) rotate([-90,0,0]) cylinder(d=3.1, h=m_wall+1, $fn=fn);
+        translate([motor_offset-nema_screw_dist/2, -nema_shaft,rod_h-rod_space+nema_screw_dist/2]) rotate([-90,0,0]) cylinder(d=3.1, h=m_wall+1, $fn=fn);
+        translate([motor_offset+nema_screw_dist/2, -nema_shaft,rod_h-rod_space-nema_screw_dist/2]) rotate([-90,0,0]) cylinder(d=3.1, h=m_wall+1, $fn=fn);
+        translate([motor_offset-nema_screw_dist/2, -nema_shaft,rod_h-rod_space-nema_screw_dist/2]) rotate([-90,0,0]) cylinder(d=3.1, h=m_wall+1, $fn=fn);
+        
+        //material saving
+        hull() {
+            save_d = nema_shaft-m_wall-wall;
+            translate([0,0-wall-(save_d)/2,rod_h-rod_space+nema_xy/2-save_d/2-wall])rotate([0,90,0])cylinder(d=save_d, h=x);
+            translate([0,0-wall-(save_d)/2,rod_h-rod_space-nema_xy/2+save_d/2+wall])rotate([0,90,0])cylinder(d=save_d, h=x);
+        }
+    }
+    
+}
+
+module ymotor() {
+    x = 20;
+    h = 55;
+    wall = 5;
+    b_wall = 5;
+    m_wall = 8;
+    b_h = 12;
+    nema_screw_dist = 31.04;
+    nema_xy = 42;
+    
+    motor_offset = 40;
+    
+    mirror([1,0,0]) difference() {
+        union() {
+            translate([0,-wall,-h])cube([x,wood_t+wall*2, h+wall ]);
+            translate([motor_offset-nema_xy/2,-nema_shaft,rod_h-nema_xy/2]) cube([nema_xy,m_wall,nema_xy]);
+            
+            
+            
+            
+            translate([0,-nema_shaft,rod_h-nema_xy/2]) cube([x,nema_shaft,nema_xy]);
+        }
+        translate([0,0,-h]) cube([x,wood_t, h]);
+        
+        // Round cut for motor circle
+        hull() {
+                translate([motor_offset,-nema_shaft-1,rod_h]) rotate([-90,0,0]) cylinder(d=23, h=m_wall+2, $fn=fn);
+                translate([motor_offset+nema_xy,-nema_shaft-1,rod_h]) rotate([-90,0,0])cylinder(d=23, h=m_wall+2, $fn=fn);
+        }
+        
+        //M3 mounting screws
+        translate([x/2,-wall-nema_shaft,-h/4])rotate([-90,0,0])cylinder(d=3.1, h= x*2+nema_shaft, $fn=fn);
+        translate([x/2,-wall-nema_shaft,-h+8])rotate([-90,0,0])cylinder(d=3.1, h= x*2+nema_shaft, $fn=fn);
+        
+        translate([x/2,-nema_shaft,-h/4])rotate([-90,0,0])cylinder(d=9, h= nema_shaft-wall, $fn=fn);
+        
+        //Motor mount screw
+        translate([motor_offset+nema_screw_dist/2, -nema_shaft,rod_h+nema_screw_dist/2]) rotate([-90,0,0]) cylinder(d=3.1, h=m_wall+1, $fn=fn);
+        translate([motor_offset-nema_screw_dist/2, -nema_shaft,rod_h+nema_screw_dist/2]) rotate([-90,0,0]) cylinder(d=3.1, h=m_wall+1, $fn=fn);
+        translate([motor_offset+nema_screw_dist/2, -nema_shaft,rod_h-nema_screw_dist/2]) rotate([-90,0,0]) cylinder(d=3.1, h=m_wall+1, $fn=fn);
+        translate([motor_offset-nema_screw_dist/2, -nema_shaft,rod_h-nema_screw_dist/2]) rotate([-90,0,0]) cylinder(d=3.1, h=m_wall+1, $fn=fn);
+        
+        //material saving
+        hull() {
+            save_d = nema_shaft-m_wall-wall;
+            translate([0,0-wall-(save_d)/2,rod_h+nema_xy/2-save_d/2-wall])rotate([0,90,0])cylinder(d=save_d, h=x);
+            translate([0,0-wall-(save_d)/2,rod_h-nema_xy/2+save_d/2+wall])rotate([0,90,0])cylinder(d=save_d, h=x);
+        }
+    }
+    
+}
 
 module woodbox() {
     
     //Back
-    translate([-box_x/2,-box_y/2-wood_t,-box_z]) cube([box_x,wood_thickness, box_z]);
+    difference() {
+        translate([-box_x/2,-box_y/2-wood_t,-box_z]) cube([box_x,wood_thickness, box_z]);
+        translate([box_x/2-rod_ws, -box_y/2-wood_t-1, rod_h-rod_space]) rotate([-90,0,0])cylinder(d=22, h=wood_t*2, $fn=fn); 
+    }
     //front
     translate([-box_x/2,box_y/2,-100]) cube([box_x,wood_thickness, 100]);
     //Left
@@ -110,8 +248,8 @@ module mount1() {
             }
         }
         translate([0,0,-h]) cube([x,wood_t, h]);
-        translate([0,-rod_ws,rod_h-rod_space]) rotate([0,90,0])  cylinder(h= b_h, d=bearing_d+bearing_extra);
-        translate([rod_ws,0,rod_h])  rotate([0,0,-90]) rotate([0,90,0]) cylinder(h= b_h, d=bearing_d+bearing_extra);
+        translate([0,-rod_ws,rod_h-rod_space]) rotate([0,90,0])  cylinder(h= b_h+1, d=bearing_d+bearing_extra);
+        translate([rod_ws,+wood_t+wall+1,rod_h])  rotate([0,0,-90]) rotate([0,90,0]) cylinder(h= b_h+1+wood_t+wall+1, d=bearing_d+bearing_extra);
         
         //M3 mounting screws
         translate([x/2,0,-h/4])rotate([-90,0,0])cylinder(d=3.1, h= x*2, $fn=fn);
@@ -137,8 +275,18 @@ module lm8uu() {
     cylinder(d=15, h=24, $fn=fn);
     
 }
+
+module coupler() {
+    //Dimensions 25mm x 19mm
+    
+    d=19;
+    h=25;
+    
+    rotate([-90,0,0])cylinder(d=d, h=h, $fn=fn);
+    
+}
 // nema 17 from internet
-module Nema17()
+module nema17()
 {
 	nema_side = 42.2;
 	nema_bolts = 31.04/2.0;
@@ -151,7 +299,7 @@ module Nema17()
 	r=(r2-r1)*2;
 	
 	
-	difference()
+	rotate([0,0,180]) translate([-nema_side/2, 0,-nema_side/2])  difference()
 	{
 	
 		union()
@@ -162,7 +310,7 @@ module Nema17()
 				rotate(90,[1,0,0]) 
 					{
 						cylinder(r = 11, h = 2, $fn = 40);
-						cylinder(r = 5.0/2.0, h = 20, $fn = 20);
+						cylinder(r = 5.0/2.0, h = nema_shaft, $fn = 20);
 					}
 		}
 	
@@ -192,6 +340,3 @@ module Nema17()
 		}
 	}
 }
-
-	
-//Nema17();
