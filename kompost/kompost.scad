@@ -1,14 +1,14 @@
 // Kompost gångjärn
 
 bas_x = 32;
-bas_y = 55;
+bas_y = 51;
 bas_z = 11;
 rod_h = 30;
 
 rod_hole = 13;
 rod_d = 28;
-rod_hole_x = 21;
-rod_hole_x2 = 14;
+rod_hole_x = 23;
+rod_hole_x2 = 16;
 clips = 3.5;
 wall = 2;
 y_clip = 20;
@@ -19,7 +19,7 @@ uthang = 20;
 framhang = 20;
 hanghojd = 42; // totala höjden på objektet
 
-f_clip = 25; // avstånd från framhang till fästklipps
+f_clip = 27; // avstånd från framhang till fästklipps
 f_clip_x = 2; // hur stor ihakningen är i klippet
 
 fn = 50; // upplösning på hål
