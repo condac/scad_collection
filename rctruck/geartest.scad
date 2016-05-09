@@ -1,14 +1,14 @@
 use <MCAD/involute_gears.scad>
 fn=32;
 pitch = 150;
-pin_d = 3.2;
+pin_d = 3.5;
 module motor() {
     union() {
         cylinder(r=35.5/2, h=50, $fn=fn);
         cylinder(r=3.175/2, h=68, $fn=fn);
     }
 }
-translate([0,0,-70]) motor();
+
 module gears() {
     union() {
     gear (number_of_teeth=40, circular_pitch=pitch,
@@ -83,7 +83,8 @@ module Bholder_cut() {
 
     
 }
-
+avst = 16.6667+6.25;
+avst2 = 22.9167+6.25;
 module all_gears() {
 avst = 16.6667+6.25;
 avst2 = 22.9167+6.25;
@@ -103,7 +104,11 @@ translate([avst2-avst,avst,-9-9-9]) rotate([0,180,-45]) translate([avst,0,0]) ge
 translate([avst2-avst,avst,-9-9-9 +55/2 -16/2]) rotate([0,180,-45]) translate([avst,0,0]) cylinder(d=10, h = 55);
 }
 module holder() {
-    translate([0,60,-50]) cube([30,3,54]);
+    difference() {
+        translate([0,60,-50]) cube([30,3,54]);
+        translate([15,200,-(17-4)/2]) rotate([90,0,0]) cylinder(d=17-4, h=400);
+        translate([15,200,-(50-4)/2-(17-4)/2-2]) rotate([90,0,0]) cylinder(d=50-4-17-4, h=400);
+    }
     difference() {
         hull() {
             translate([avst2,0,0])pinholder();
@@ -150,9 +155,14 @@ module motor_cut() {
     rotate([0,0,-45]) translate([-5,-25/2 -1.5,0])  union() {
         translate([0,0,0]) cube([10,3,4]);
         translate([0,25,0]) cube([10,3,4]);
+        hull() {
+            translate([0,1.5+25/2,0]) cylinder(d=13, h=4);
+            translate([10,1.5+25/2,0]) cylinder(d=13, h=4);
+        }
     }
 }
 //motor_cut();
-holder();
-
-
+//holder();
+rotate([-90,0,0]) holder();
+//all_gears();
+//translate([0,0,-70]) motor();
