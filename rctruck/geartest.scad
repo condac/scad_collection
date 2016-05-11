@@ -9,7 +9,17 @@ module motor() {
         cylinder(r=3.175/2, h=68, $fs= fs);
     }
 }
+module pinion() {
+    $fs=1;
+    difference() {
+        union() {
 
+            translate([0,0,9.5]) gear (number_of_teeth=15, circular_pitch=pitch,gear_thickness = 9,rim_thickness = 9,hub_thickness = 9,bore_diameter=pin_d,circles=0, $fs= fs);
+            hollow_cyl(d=3.2, w=4, h=9.5);
+        }
+        translate([-10,0,9/2]) rotate([0,90,0]) cylinder(d=2.9, h=20);
+    }
+}
 module gears_1() {
     union() {
     gear (number_of_teeth=49, circular_pitch=pitch,
@@ -465,9 +475,10 @@ module display() {
 // # Printer friendly
 //rotate([180,0,0]) diffgear();
 //diff_arms();
-rotate([0,90,0]) under_axle();
+//rotate([0,90,0]) under_axle();
 //rotate([0,-90,0]) up_axle();
 //rotate([-90,0,0]) holder();
 //turn_arm();
 //rotate([0,180,0]) turn_hub();
 //solid_adapter();
+pinion();
