@@ -110,13 +110,13 @@ translate([avst2-avst,avst,-9-9-9-5]) rotate([0,180,-45]) translate([avst,0,0]) 
 
 //translate([avst2-avst,avst,-9-9-9-5 +55/2 -16/2]) rotate([0,180,-45]) translate([avst,0,0]) %cylinder(d=10, h = 55);
     
-    translate([avst2-avst,avst,-9-9-9-5 +6.1 -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,180,0]) %diff_arms();
-    translate([avst2-avst,avst,-9-9-9-5 -6.1-2 -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,0,0]) %diff_arms();
+    translate([avst2-avst,avst,-9-9-9-5 +6.1 -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,180,0]) diff_arms();
+    translate([avst2-avst,avst,-9-9-9-5 -6.1-2 -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,0,0]) diff_arms();
 }
 module holder() {
     //baseplate
     difference() {
-        translate([53-3,0,-50]) cube([3,30,54]);
+        translate([0,55,-60]) cube([30,3,65]);
         //material saving
         translate([15,200,-(17-4)/2]) rotate([90,0,0]) cylinder(d=17-4, h=400); 
         translate([15,200,-(50-4)/2-(17-4)/2-2]) rotate([90,0,0]) cylinder(d=50-4-17-4, h=400);
@@ -127,7 +127,7 @@ module holder() {
             translate([avst2,0,0])pinholder();
             translate([avst2,avst,0])pinholder();
             //translate([avst2,avst,0+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder();
-            translate([50,0,0]) cube([3,30,4]);
+            translate([0,55,0]) cube([30,3,4]);
         
         }
         translate([avst2,0,0])pinholder_cut();
@@ -141,7 +141,7 @@ module holder() {
             translate([avst2,avst,-22+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder();
             //translate([avst2-avst,avst,-22+4]) rotate([0,180,-45]) translate([avst,0,0]) Bholder();
 
-            translate([50,0,-22]) cube([3,45,4]);
+            translate([0,55,-22]) cube([30,3,4]);
             translate([0,0,-22]) cylinder(d=35, h=4);
         }
         translate([avst2,0,-22])pinholder_cut();
@@ -152,6 +152,8 @@ module holder() {
             translate([avst2,avst,-22+4])rotate([0,180,0]) cylinder(d=18, h=4);
             translate([avst2+25,avst,-22+4])rotate([0,180,0]) cylinder(d=18, h=4);
         }
+        translate([avst2-avst,avst,-p2off+2]) rotate([0,180,-45]) translate([avst,0,0]) cylinder(d=30, h=3);
+        translate([avst2-avst,avst,-p2off+5]) rotate([0,180,-45]) translate([avst,0,0]) %cylinder(d=15.5+3*2, h=3);
     }
     p3off = 37;
     difference() {
@@ -159,7 +161,7 @@ module holder() {
             //translate([avst2,0,0])pinholder();
             translate([avst2,avst,-37])pinholder();
             //translate([avst2,avst,0+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder();
-            translate([50,10,-37]) cube([3,30,4]);
+            translate([17,55,-37]) cube([13,3,4]);
         
         }
         translate([avst2,0,-37])pinholder_cut();
@@ -173,7 +175,7 @@ module holder() {
             //translate([avst2,avst,-p4off])pinholder();
             translate([avst2,avst,-p4off+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder();
             //translate([avst2-avst,avst,-p4off+4]) rotate([0,180,-45]) translate([avst,0,0]) Bholder();
-            translate([50,20,-p4off]) cube([3,30,4]);
+            translate([10,55,-p4off]) cube([20,3,4]);
         }
         translate([avst2,0,-p4off])pinholder_cut();
         translate([avst2,avst,-p4off])pinholder_cut();
@@ -227,20 +229,55 @@ module hollow_cyl3(d1, d2, w, h) {
     difference() {
         cylinder(d1=d1+w*2, d2=d2+w*2, h=h);
         
-        translate([0,0,-1])cylinder(d=d2, h=h+2);
+        translate([0,0,-1]) cylinder(d=d2, h=h+2);
     }
 }
+module mount() {
+    x = 8;
+    y= 15;
+    z = 4;
+    $fs= 0.9;
+    difference() {
+        cube([x,y,z]);
+        translate([x/2,y-3,-1]) cylinder(d=3,h=z+2);
+        translate([0,0,-1]) cylinder(d=12,h=z+2);
+    }
+}
+module mount2() {
+    x = 8;
+    y= 15;
+    z = 6;
+    $fs= 0.9;
+    difference() {
+        cube([x,y,z]);
+        translate([0,y-3,z/2]) rotate([0,90,0]) cylinder(d=3,h=z+2);
+        translate([0,0,-1]) cylinder(d=16,h=z+2);
+    }
+}
+//mount();
 module axle1() {
     $fs= 0.9;
     hollow_cyl(d=38, h=10, w=3);
     translate([0,0,10]) hollow_cyl2(d1=38, d2=15, h=10, w=3);
     translate([0,0,20-2]) hollow_cyl3(d1=15,d2=12, h=2, w=3);
-    color("red") translate([0,0,20]) hollow_cyl(d=15.2, h=4.5, w=3);
+    color("red") translate([0,0,20]) hollow_cyl(d=15.5, h=4.5, w=3);
     translate([0,0,20+4.5]) hollow_cyl3(d1=15,d2=12, h=4.5, w=3);
     difference() {
         translate([0,0,20+4.5+4.5]) hollow_cyl(d=12, h=30, w=3);
         translate([-50,0,20+4.5+4.5+30-5]) rotate([0,90,0]) cylinder(d=3, h=100);
     }
+    translate([0,0,40]) mount();
+    translate([0,0,40]) mirror([0,1,0]) mount();
+    
+    translate([0,0,40]) mirror([1,0,0]) mount();
+    translate([0,0,40]) mirror([0,1,0]) mirror([1,0,0]) mount();
+    
+    translate([0,0,20]) mount2();
+    translate([0,0,20]) mirror([0,1,0]) mount2();
+    
+    translate([0,0,20]) mirror([1,0,0]) mount2();
+    translate([0,0,20]) mirror([0,1,0]) mirror([1,0,0]) mount2();
+    
     
     translate([0,0,45/2]) %sakura_axle();
 }
@@ -249,8 +286,8 @@ module under_axle() {
         union() {
             axle1();
             mirror([0,0,1])axle1();
-            translate([0,0,190/2-15]) rotate([180,0,0])  solid_adapter();
-            translate([0,0,-190/2+15]) mirror([0,0,1]) rotate([180,0,0])  solid_adapter();
+            translate([0,0,190/2-15]) rotate([180,0,0])  %solid_adapter();
+            translate([0,0,-190/2+15]) mirror([0,0,1]) rotate([180,0,0])  %solid_adapter();
         }
         translate([0,-100,-100]) cube([200,200,200]);
     }
@@ -291,16 +328,16 @@ module diff_arms() {
     difference() {
         union() {
             translate([-x/2, -x/2, 0]) cube([x,x,2]);
-            cylinder(d=9.5, h= ah);
+            cylinder(d=9.7, h= ah);
         }
-        translate([0, 0, 10])cylinder(d=6.1, h= ah);
+        translate([0, 0, 10])cylinder(d=6.3, h= ah);
         translate([-slice/2, -10/2, 10]) cube([slice,10,20]);
-        translate([0, 0, -3]) diff_arms_cut();
+        translate([0, 0, -5]) diff_arms_cut();
     }
 }
 module diff_arms_cut() {
     $fs= 0.9;
-    x = 20;
+    x = 21;
     l = 5+3/2+3;
     rotate([0,0,45]) union() {
         translate([l, 0, -20])cylinder(d=3, h= 50);
@@ -308,26 +345,28 @@ module diff_arms_cut() {
         translate([0, l, -20])cylinder(d=3, h= 50);
         translate([0, -l, -20])cylinder(d=3, h= 50);
     }
-    translate([-x/2, -x/2, 0]) cube([x,x,2]);
+    translate([-x/2, -x/2, 0]) cube([x,x,3.5]);
 
 }
 
-//motor_cut();
-//rotate([0,-90,0]) holder();
-//rotate([-90,0,0]) holder();
-//rotate([0,-90,0]) all_gears();
-//rotate([0,-90,0]) translate([0,0,-75]) motor();
+module display() {
+    //motor_cut();
+    rotate([0,-90,0]) holder();
+    
+    rotate([0,-90,0]) all_gears();
+    //rotate([0,-90,0]) translate([0,0,-75]) motor();
 
-//rotate([0,-90,0]) translate([avst2-avst,avst,-9-9-9-5  -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,-180,-45]) under_axle();
-//rotate([0,-90,0]) translate([avst2-avst,avst,-9-9-9-5  -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,-180,-45]) up_axle();
-//axle1();
-//up_axle();
-//translate([0,0,190/2-15]) rotate([180,0,0]) %solid_adapter();
-//solid_adapter();
-
-
+    //rotate([0,-90,0]) translate([avst2-avst,avst,-9-9-9-5  -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,-180,-45]) under_axle();
+    rotate([0,-90,0]) translate([avst2-avst,avst,-9-9-9-5  -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,-180,-45]) up_axle();
+    //axle1();
+    //up_axle();
+    //translate([0,0,190/2-15]) rotate([180,0,0]) %solid_adapter();
+    //solid_adapter();
+}
+display();
 
 // ############################
 // # Printer friendly
-rotate([180,0,0]) diffgear();
+//rotate([180,0,0]) diffgear();
 //diff_arms();
+//rotate([0,90,0]) under_axle();
