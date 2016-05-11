@@ -334,7 +334,7 @@ module under_axle() {
             axle1();
             mirror([0,0,1])axle1();
             translate([0,0,190/2-15]) rotate([180,0,0])  %solid_adapter();
-            translate([0,0,-190/2+15]) mirror([0,0,1]) rotate([180,0,0])  %solid_adapter();
+            translate([0,0,-190/2+15]) mirror([0,0,1]) rotate([180,0,0])  %turn_adapter();
         }
         translate([0,-100,-100]) cube([200,200,200]);
     }
@@ -345,7 +345,7 @@ module up_axle() {
             axle1();
             mirror([0,0,1])axle1();
             //translate([0,0,190/2-15]) rotate([180,0,0])  %solid_adapter();
-            //translate([0,0,-190/2+15]) mirror([0,0,1]) rotate([180,0,0])  %solid_adapter();
+            //translate([0,0,-190/2+15]) mirror([0,0,1]) rotate([180,0,0])  %turn_arm();
         }
         translate([-200,-100,-100]) cube([200,200,200]);
         
@@ -366,6 +366,53 @@ module solid_adapter() {
         translate([0,0,4+4+13]) hollow_cyl(d=12+3+3+1, w=2, h=10);
         translate([-50,0,4+4+13+5]) rotate([0,90,0]) cylinder(d=3, h=100);
     }
+}
+module turn_arm() {
+    $fs= 0.5;
+    hm = 20.5;
+    difference() {
+        union() {
+            hollow_cyl(d=10.5, w=2, h=10);
+            hollow_cyl(d=5.5, w=3, h=5);
+            translate([0, 0, 8])  hollow_cyl2(d1=10.5, d2=12, w=2, h=2); // strength
+            translate([0, 0, 10])  hollow_cyl(d=12, w=2, h=4);
+            translate([-hm/2, 0, 14]) rotate([0,90,0]) cylinder(d=7, h=hm);
+        }
+        translate([-15, 0, 14]) rotate([0,90,0]) cylinder(d=2.85, h=30);
+        translate([0, 0, 10])  cylinder(d=12, h=10);
+    }
+    difference() {
+        hull() {
+            translate([-5/2,6,0]) cube([5,1,10]);
+            translate([-5/2,26,22]) rotate([0,90,0]) hollow_cyl(d=3, w=2, h=5);
+        }
+        translate([-5/2,26,22]) rotate([0,90,0]) cylinder(d=3, h=5);
+    }
+}
+module turn_hub() {
+    $fs= 0.9;
+    hm = 20.5;
+    difference() {
+        union() {
+            translate([0,0,4+4+13]) hollow_cyl(d=12+3+3+1, w=2, h=10);
+            hull() {
+                translate([-hm/2-1.2/2-3, 0, 14]) rotate([0,90,0]) cylinder(d=7, h=3);
+                translate([-hm/2-1.2/2-3, 0, 4+4+13+5]) rotate([0,90,0]) cylinder(d=7, h=3);
+            }
+            hull() {
+                translate([hm/2+1.2/2 , 0, 14]) rotate([0,90,0]) cylinder(d=7, h=3);
+                translate([hm/2+1.2/2 , 0, 4+4+13+5]) rotate([0,90,0]) cylinder(d=7, h=3);
+            }
+        }
+        translate([-50,0,4+4+13+5]) rotate([0,90,0]) cylinder(d=3, h=100);
+        translate([-50,0,14]) rotate([0,90,0]) cylinder(d=3, h=100);
+    }
+    
+    
+}
+module turn_adapter() {
+    turn_arm();
+    turn_hub();
 }
 module diff_arms() {
     $fs= 0.9;
@@ -396,26 +443,31 @@ module diff_arms_cut() {
 
 }
 
+
+
 module display() {
     //motor_cut();
-    rotate([0,-90,0]) holder();
+    //rotate([0,-90,0]) holder();
     
-    rotate([0,-90,0]) all_gears();
+    //rotate([0,-90,0]) all_gears();
     //rotate([0,-90,0]) translate([0,0,-75]) motor();
 
-    //rotate([0,-90,0]) translate([avst2-avst,avst,-9-9-9-5  -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,-180,-45]) under_axle();
-    rotate([0,-90,0]) translate([avst2-avst,avst,-9-9-9-5  -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,-180,-45]) up_axle();
+    rotate([0,-90,0]) translate([avst2-avst,avst,-9-9-9-5  -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,-180,-45]) under_axle();
+    //rotate([0,-90,0]) translate([avst2-avst,avst,-9-9-9-5  -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,-180,-45]) up_axle();
     //axle1();
     //up_axle();
     //translate([0,0,190/2-15]) rotate([180,0,0]) %solid_adapter();
     //solid_adapter();
 }
-//rotate([0,90,0]) display();
-
+//display();
+//turn_arm();
 // ############################
 // # Printer friendly
 //rotate([180,0,0]) diffgear();
 //diff_arms();
-//rotate([0,90,0]) under_axle();
+rotate([0,90,0]) under_axle();
 //rotate([0,-90,0]) up_axle();
-rotate([-90,0,0]) holder();
+//rotate([-90,0,0]) holder();
+//turn_arm();
+//rotate([0,180,0]) turn_hub();
+//solid_adapter();
