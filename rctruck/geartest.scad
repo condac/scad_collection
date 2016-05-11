@@ -1,44 +1,45 @@
 use <MCAD/involute_gears.scad>
 fn=32;
+fs=0.9;
 pitch = 150;
 pin_d = 3.5;
 module motor() {
     union() {
-        cylinder(r=35.5/2, h=50, $fn=fn);
-        cylinder(r=3.175/2, h=68, $fn=fn);
+        cylinder(r=35.5/2, h=50, $fs= fs);
+        cylinder(r=3.175/2, h=68, $fs= fs);
     }
 }
 
-module gears() {
+module gears_1() {
+    union() {
+    gear (number_of_teeth=49, circular_pitch=pitch,
+        gear_thickness = 8,
+        rim_thickness = 8,
+        hub_thickness = 8,
+        bore_diameter=pin_d,
+        circles=2, $fs= fs);
+    translate([0,0,8]) gear (number_of_teeth=15, circular_pitch=pitch,
+        gear_thickness = 9,
+        rim_thickness = 9,
+        hub_thickness = 9,
+        bore_diameter=pin_d,
+        circles=2, $fs= fs);
+    }    
+}
+module gears_2() {
     union() {
     gear (number_of_teeth=40, circular_pitch=pitch,
         gear_thickness = 8,
         rim_thickness = 8,
         hub_thickness = 8,
         bore_diameter=pin_d,
-        circles=2, $fn=fn);
+        circles=6, $fs= fs);
     translate([0,0,8]) gear (number_of_teeth=15, circular_pitch=pitch,
-        gear_thickness = 9,
-        rim_thickness = 9,
-        hub_thickness = 9,
+        gear_thickness = 9+6,
+        rim_thickness = 9+6,
+        hub_thickness = 9+6,
         bore_diameter=pin_d,
-        circles=2, $fn=fn);
-    }    
-}
-module gears_2() {
-    union() {
-    gear (number_of_teeth=50, circular_pitch=pitch,
-        gear_thickness = 8,
-        rim_thickness = 8,
-        hub_thickness = 8,
-        bore_diameter=pin_d,
-        circles=6, $fn=fn);
-    translate([0,0,8]) gear (number_of_teeth=15, circular_pitch=pitch,
-        gear_thickness = 9,
-        rim_thickness = 9,
-        hub_thickness = 9,
-        bore_diameter=pin_d,
-        circles=2, $fn=fn);
+        circles=2, $fs= fs);
     }    
 }
 module gears_3() {
@@ -48,13 +49,13 @@ module gears_3() {
         rim_thickness = 8,
         hub_thickness = 8,
         bore_diameter=pin_d,
-        circles=2, $fn=fn);
+        circles=2, $fs= fs);
     translate([0,0,8]) gear (number_of_teeth=15, circular_pitch=pitch,
         gear_thickness = 17,
         rim_thickness = 17,
         hub_thickness = 17,
         bore_diameter=pin_d,
-        circles=2, $fn=fn);
+        circles=2, $fs= fs);
     }    
 }
 module pinholder() {
@@ -84,10 +85,10 @@ module Bholder_cut() {
     
 }
 avst = 16.6667+6.25;
-avst2 = 22.9167+6.25;
+avst2 = 20.4167+6.25;
 module all_gears() {
 avst = 16.6667+6.25;
-avst2 = 22.9167+6.25;
+avst2 = 20.4167+6.25;
 
 %translate([0,0,-8]) gear (number_of_teeth=15, circular_pitch=pitch,
         gear_thickness = 8,
@@ -96,73 +97,170 @@ avst2 = 22.9167+6.25;
         bore_diameter=3.175,
         circles=2, $fn=fn);
 
-translate([avst2,0,0]) rotate([0,180,0]) gears_2(); // /3.333 // gear1
-translate([avst2,avst,-9])rotate([0,180,0]) gears(); // 8.66 // gear2
-translate([avst2,avst,-9-9]) rotate([0,180,-45]) translate([avst,0,0]) gears_3();   // 22.5
-translate([avst2-avst,avst,-9-9-9]) rotate([0,180,-45]) translate([avst,0,0]) gear (number_of_teeth=40, circular_pitch=pitch,        gear_thickness = 16,        rim_thickness = 16,        hub_thickness = 16,        bore_diameter=6.2,        circles=4, $fn=fn);                           // 58.5866666667 
+translate([avst2,0,0]) rotate([0,180,0]) gears_1(); // /3.333 // gear1
+translate([avst2,avst,-9])rotate([0,180,0]) gears_2(); // 8.66 // gear2
+translate([avst2,avst,-9-9-5]) rotate([0,180,-45]) translate([avst,0,0]) gears_3();   // 22.5
+translate([avst2-avst,avst,-9-9-9-5]) rotate([0,180,-45]) translate([avst,0,0]) gear (number_of_teeth=40, circular_pitch=pitch,        gear_thickness = 16,        rim_thickness = 16,        hub_thickness = 16,        bore_diameter=6.2,        circles=4, $fn=fn);                           // 58.5866666667 
 
-translate([avst2-avst,avst,-9-9-9 +55/2 -16/2]) rotate([0,180,-45]) translate([avst,0,0]) cylinder(d=10, h = 55);
+translate([avst2-avst,avst,-9-9-9-5 +55/2 -16/2]) rotate([0,180,-45]) translate([avst,0,0]) cylinder(d=10, h = 55);
 }
 module holder() {
+    //baseplate
     difference() {
-        translate([0,60,-50]) cube([30,3,54]);
-        translate([15,200,-(17-4)/2]) rotate([90,0,0]) cylinder(d=17-4, h=400);
+        translate([53-3,0,-50]) cube([3,30,54]);
+        //material saving
+        translate([15,200,-(17-4)/2]) rotate([90,0,0]) cylinder(d=17-4, h=400); 
         translate([15,200,-(50-4)/2-(17-4)/2-2]) rotate([90,0,0]) cylinder(d=50-4-17-4, h=400);
     }
+    p1off = 0;
     difference() {
         hull() {
             translate([avst2,0,0])pinholder();
             translate([avst2,avst,0])pinholder();
-            translate([avst2,avst,0+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder();
-            translate([0,60,0]) cube([30,3,4]);
+            //translate([avst2,avst,0+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder();
+            translate([50,0,0]) cube([3,30,4]);
         
         }
         translate([avst2,0,0])pinholder_cut();
         translate([avst2,avst,0])pinholder_cut();
-        translate([avst2,avst,0+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder_cut();
+        //translate([avst2,avst,0+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder_cut();
+    }
+    p2off = 22;
+    difference() {
+        hull() {
+            translate([avst2,0,-22])pinholder();
+            translate([avst2,avst,-22+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder();
+            //translate([avst2-avst,avst,-22+4]) rotate([0,180,-45]) translate([avst,0,0]) Bholder();
+
+            translate([50,0,-22]) cube([3,45,4]);
+            translate([0,0,-22]) cylinder(d=35, h=4);
+        }
+        translate([avst2,0,-22])pinholder_cut();
+        translate([avst2,avst,-22+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder_cut();
+        //translate([avst2-avst,avst,-22+4]) rotate([0,180,-45]) translate([avst,0,0]) Bholder_cut();
+        translate([0,0,-22]) motor_cut();
+        hull() {
+            translate([avst2,avst,-22+4])rotate([0,180,0]) cylinder(d=18, h=4);
+            translate([avst2+25,avst,-22+4])rotate([0,180,0]) cylinder(d=18, h=4);
+        }
+    }
+    p3off = 37;
+    difference() {
+        hull() {
+            //translate([avst2,0,0])pinholder();
+            translate([avst2,avst,-37])pinholder();
+            //translate([avst2,avst,0+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder();
+            translate([50,10,-37]) cube([3,30,4]);
+        
+        }
+        translate([avst2,0,-37])pinholder_cut();
+        translate([avst2,avst,-37])pinholder_cut();
+        //translate([avst2,avst,0+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder_cut();
+    }
+    p4off = 53;
+    difference() {
+        hull() {
+            //translate([avst2,0,-p4off])pinholder();
+            //translate([avst2,avst,-p4off])pinholder();
+            translate([avst2,avst,-p4off+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder();
+            //translate([avst2-avst,avst,-p4off+4]) rotate([0,180,-45]) translate([avst,0,0]) Bholder();
+            translate([50,20,-p4off]) cube([3,30,4]);
+        }
+        translate([avst2,0,-p4off])pinholder_cut();
+        translate([avst2,avst,-p4off])pinholder_cut();
+        translate([avst2,avst,-p4off+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder_cut();
+        //translate([avst2-avst,avst,-p4off+4]) rotate([0,180,-45]) translate([avst,0,0]) Bholder_cut();
+        //translate([0,0,-100]) cylinder(d=40, h=200);
     }
     
-    difference() {
-        hull() {
-            translate([avst2,0,-50])pinholder();
-            translate([avst2,avst,-50])pinholder();
-            translate([avst2,avst,-50+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder();
-            translate([avst2-avst,avst,-50+4]) rotate([0,180,-45]) translate([avst,0,0]) Bholder();
-            translate([0,60,-50]) cube([30,3,4]);
-        }
-        translate([avst2,0,-50])pinholder_cut();
-        translate([avst2,avst,-50])pinholder_cut();
-        translate([avst2,avst,-50+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder_cut();
-        translate([avst2-avst,avst,-50+4]) rotate([0,180,-45]) translate([avst,0,0]) Bholder_cut();
-        translate([0,0,-100]) cylinder(d=45, h=200);
-    }
-    difference() {
-        hull() {
-            translate([avst2,avst,-17+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder();
-            translate([avst2-avst,avst,-17+4]) rotate([0,180,-45]) translate([avst,0,0]) Bholder();
-
-            translate([0,60,-17]) cube([30,3,4]);
-            translate([0,0,-17]) cylinder(d=35, h=4);
-        }
-
-        translate([avst2,avst,-17+4]) rotate([0,180,-45]) translate([avst,0,0]) pinholder_cut();
-        translate([avst2-avst,avst,-17+4]) rotate([0,180,-45]) translate([avst,0,0]) Bholder_cut();
-        translate([0,0,-17]) motor_cut();
-        translate([avst2,avst,-17+4])rotate([0,180,0]) cylinder(d=38, h=4);
-    }
 }
 module motor_cut() {
-    rotate([0,0,-45]) translate([-5,-25/2 -1.5,0])  union() {
-        translate([0,0,0]) cube([10,3,4]);
-        translate([0,25,0]) cube([10,3,4]);
+    rotate([0,0,0]) translate([0,0,0])  union() {
+        translate([0,-25/2,0]) cylinder(d=3, h=4, $fn=32);
+        translate([0,25/2,0]) cylinder(d=3, h=4, $fn=32);
         hull() {
-            translate([0,1.5+25/2,0]) cylinder(d=13, h=4);
-            translate([10,1.5+25/2,0]) cylinder(d=13, h=4);
+            translate([0,0,0]) cylinder(d=13, h=4);
+            //translate([10,1.5+25/2,0]) cylinder(d=13, h=4);
         }
     }
 }
 //motor_cut();
-//holder();
-rotate([-90,0,0]) holder();
-//all_gears();
-//translate([0,0,-70]) motor();
+rotate([0,-90,0]) holder();
+//rotate([-90,0,0]) holder();
+rotate([0,-90,0]) all_gears();
+rotate([0,-90,0]) translate([0,0,-75]) motor();
+
+module sakura_axle() {
+    $fs= 0.9;
+    sphere(d=6);
+    translate([0,5,0]) rotate([90,0,0]) cylinder(d=2, h=10);
+    cylinder(d=3.15, h=44);
+    translate([0,5,44]) rotate([90,0,0]) cylinder(d=2, h=10);
+    translate([0,0,44]) cylinder(d=10, h=3);
+    translate([0,0,44+3]) cylinder(d1=10, d2=7, h=1.5);
+    translate([0,5,44+15.5]) rotate([90,0,0]) cylinder(d=2, h=10);
+    translate([0,0,44]) cylinder(d=5, h=17.5);
+    translate([0,0,44]) cylinder(d=3,85, h=30);
+}
+module hollow_cyl(d, w, h) {
+    $fs= 0.9;
+    difference() {
+        cylinder(d=d+w*2, h=h);
+        translate([0,0,-1])cylinder(d=d, h=h+2);
+    }
+}
+module hollow_cyl2(d1, d2, w, h) {
+    $fs= 0.9;
+    difference() {
+        cylinder(d1=d1+w*2, d2=d2+w*2, h=h);
+        translate([0,0,0])cylinder(d1=d1,d2=d2, h=h);
+        //translate([0,0,-1])cylinder(d=d2, h=h+2);
+    }
+}
+module hollow_cyl3(d1, d2, w, h) {
+    $fs= 0.9;
+    difference() {
+        cylinder(d1=d1+w*2, d2=d2+w*2, h=h);
+        
+        translate([0,0,-1])cylinder(d=d2, h=h+2);
+    }
+}
+module axle1() {
+    $fs= 0.9;
+    hollow_cyl(d=38, h=10, w=3);
+    translate([0,0,10]) hollow_cyl2(d1=38, d2=15, h=10, w=3);
+    translate([0,0,20-2]) hollow_cyl3(d1=15,d2=12, h=2, w=3);
+    color("red") translate([0,0,20]) hollow_cyl(d=15.2, h=4.5, w=3);
+    translate([0,0,20+4.5]) hollow_cyl3(d1=15,d2=12, h=4.5, w=3);
+    difference() {
+        translate([0,0,20+4.5+4.5]) hollow_cyl(d=12, h=30, w=3);
+        translate([-50,0,20+4.5+4.5+30-5]) rotate([0,90,0]) cylinder(d=3, h=100);
+    }
+    
+    translate([0,0,45/2]) %sakura_axle();
+}
+module axle() {
+    difference() {
+        union() {
+            axle1();
+            mirror([0,0,1])axle1();
+            translate([0,0,190/2-15]) rotate([180,0,0]) solid_adapter();
+            translate([0,0,-190/2+15]) mirror([0,0,1]) rotate([180,0,0]) solid_adapter();
+        }
+        translate([0,-100,0]) cube([200,200,200]);
+    }
+}
+module solid_adapter() {
+    $fs= 0.9;
+    hollow_cyl(d=5.5, w=4, h=4);
+    color("cyan")translate([0,0,4]) %hollow_cyl(d=5, w=5/2, h=4);
+    translate([0,0,4]) hollow_cyl(d=10.2, w=3, h=4);
+    translate([0,0,4+4]) hollow_cyl2(d1=12, d2=12+3+3+1, w=2, h=13);
+    difference() {
+        translate([0,0,4+4+13]) hollow_cyl(d=12+3+3+1, w=2, h=10);
+        translate([-50,0,4+4+13+5]) rotate([0,90,0]) cylinder(d=3, h=100);
+    }
+}
+rotate([0,-90,0]) translate([avst2-avst,avst,-9-9-9-5  -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,-180,-45]) axle();
+//axle1();
+//translate([0,0,190/2-15]) rotate([180,0,0]) %solid_adapter();
