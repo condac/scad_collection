@@ -58,6 +58,12 @@ module gears_3() {
         circles=2, $fs= fs);
     }    
 }
+module diffgear() {
+    difference() {
+        gear (number_of_teeth=40, circular_pitch=pitch,        gear_thickness = 16,        rim_thickness = 16,        hub_thickness = 16,        bore_diameter=6.2,        circles=0, $fn=fn);
+        diff_arms_cut();
+    }
+}
 module pinholder() {
     difference() {
         cylinder(d=pin_d+5, h=4, $fn=fn);
@@ -100,9 +106,12 @@ avst2 = 20.4167+6.25;
 translate([avst2,0,0]) rotate([0,180,0]) gears_1(); // /3.333 // gear1
 translate([avst2,avst,-9])rotate([0,180,0]) gears_2(); // 8.66 // gear2
 translate([avst2,avst,-9-9-5]) rotate([0,180,-45]) translate([avst,0,0]) gears_3();   // 22.5
-translate([avst2-avst,avst,-9-9-9-5]) rotate([0,180,-45]) translate([avst,0,0]) gear (number_of_teeth=40, circular_pitch=pitch,        gear_thickness = 16,        rim_thickness = 16,        hub_thickness = 16,        bore_diameter=6.2,        circles=4, $fn=fn);                           // 58.5866666667 
+translate([avst2-avst,avst,-9-9-9-5]) rotate([0,180,-45]) translate([avst,0,0]) diffgear();                           // 58.5866666667 
 
-translate([avst2-avst,avst,-9-9-9-5 +55/2 -16/2]) rotate([0,180,-45]) translate([avst,0,0]) cylinder(d=10, h = 55);
+//translate([avst2-avst,avst,-9-9-9-5 +55/2 -16/2]) rotate([0,180,-45]) translate([avst,0,0]) %cylinder(d=10, h = 55);
+    
+    translate([avst2-avst,avst,-9-9-9-5 +6.1 -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,180,0]) %diff_arms();
+    translate([avst2-avst,avst,-9-9-9-5 -6.1-2 -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,0,0]) %diff_arms();
 }
 module holder() {
     //baseplate
@@ -184,11 +193,7 @@ module motor_cut() {
         }
     }
 }
-//motor_cut();
-rotate([0,-90,0]) holder();
-//rotate([-90,0,0]) holder();
-rotate([0,-90,0]) all_gears();
-rotate([0,-90,0]) translate([0,0,-75]) motor();
+
 
 module sakura_axle() {
     $fs= 0.9;
@@ -239,28 +244,90 @@ module axle1() {
     
     translate([0,0,45/2]) %sakura_axle();
 }
-module axle() {
+module under_axle() {
     difference() {
         union() {
             axle1();
             mirror([0,0,1])axle1();
-            translate([0,0,190/2-15]) rotate([180,0,0]) solid_adapter();
-            translate([0,0,-190/2+15]) mirror([0,0,1]) rotate([180,0,0]) solid_adapter();
+            translate([0,0,190/2-15]) rotate([180,0,0])  solid_adapter();
+            translate([0,0,-190/2+15]) mirror([0,0,1]) rotate([180,0,0])  solid_adapter();
         }
-        translate([0,-100,0]) cube([200,200,200]);
+        translate([0,-100,-100]) cube([200,200,200]);
+    }
+}
+module up_axle() {
+    difference() {
+        union() {
+            axle1();
+            mirror([0,0,1])axle1();
+            //translate([0,0,190/2-15]) rotate([180,0,0])  %solid_adapter();
+            //translate([0,0,-190/2+15]) mirror([0,0,1]) rotate([180,0,0])  %solid_adapter();
+        }
+        translate([-200,-100,-100]) cube([200,200,200]);
+        
+        
+        // gear cut
+        translate([16.6667+6.25,0,-15])cylinder(r= 6.25+1.5, h= 25);
+        translate([16.6667+6.25,0,8])cylinder(r= 16.6667+1.5, h= 10);
+        
     }
 }
 module solid_adapter() {
     $fs= 0.9;
     hollow_cyl(d=5.5, w=4, h=4);
     color("cyan")translate([0,0,4]) %hollow_cyl(d=5, w=5/2, h=4);
-    translate([0,0,4]) hollow_cyl(d=10.2, w=3, h=4);
+    translate([0,0,4]) hollow_cyl(d=10.5, w=3, h=4);
     translate([0,0,4+4]) hollow_cyl2(d1=12, d2=12+3+3+1, w=2, h=13);
     difference() {
         translate([0,0,4+4+13]) hollow_cyl(d=12+3+3+1, w=2, h=10);
         translate([-50,0,4+4+13+5]) rotate([0,90,0]) cylinder(d=3, h=100);
     }
 }
-rotate([0,-90,0]) translate([avst2-avst,avst,-9-9-9-5  -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,-180,-45]) axle();
+module diff_arms() {
+    $fs= 0.9;
+    x = 20;
+    ah = 45/2;
+    slice = 2;
+    difference() {
+        union() {
+            translate([-x/2, -x/2, 0]) cube([x,x,2]);
+            cylinder(d=9.5, h= ah);
+        }
+        translate([0, 0, 10])cylinder(d=6.1, h= ah);
+        translate([-slice/2, -10/2, 10]) cube([slice,10,20]);
+        translate([0, 0, -3]) diff_arms_cut();
+    }
+}
+module diff_arms_cut() {
+    $fs= 0.9;
+    x = 20;
+    l = 5+3/2+3;
+    rotate([0,0,45]) union() {
+        translate([l, 0, -20])cylinder(d=3, h= 50);
+        translate([-l, 0, -20])cylinder(d=3, h= 50);
+        translate([0, l, -20])cylinder(d=3, h= 50);
+        translate([0, -l, -20])cylinder(d=3, h= 50);
+    }
+    translate([-x/2, -x/2, 0]) cube([x,x,2]);
+
+}
+
+//motor_cut();
+//rotate([0,-90,0]) holder();
+//rotate([-90,0,0]) holder();
+//rotate([0,-90,0]) all_gears();
+//rotate([0,-90,0]) translate([0,0,-75]) motor();
+
+//rotate([0,-90,0]) translate([avst2-avst,avst,-9-9-9-5  -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,-180,-45]) under_axle();
+//rotate([0,-90,0]) translate([avst2-avst,avst,-9-9-9-5  -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,-180,-45]) up_axle();
 //axle1();
+//up_axle();
 //translate([0,0,190/2-15]) rotate([180,0,0]) %solid_adapter();
+//solid_adapter();
+
+
+
+// ############################
+// # Printer friendly
+rotate([180,0,0]) diffgear();
+//diff_arms();
