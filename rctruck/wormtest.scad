@@ -318,12 +318,12 @@ module axle1() {
     $fs= 0.9;
     hollow_cyl(d=38, h=10, w=3);
     translate([0,0,10]) hollow_cyl2(d1=38, d2=15, h=10, w=3);
-    translate([0,0,20-2]) hollow_cyl3(d1=15,d2=12, h=2, w=3);
-    color("red") translate([0,0,20]) hollow_cyl(d=15.5, h=4.5, w=3);
-    translate([0,0,20+4.5]) hollow_cyl3(d1=15,d2=12, h=4.5, w=3);
+    translate([0,0,15-2]) hollow_cyl(d=14.5, h=2, w=3);
+    color("red") translate([0,0,15]) hollow_cyl(d=15.5, h=4.5, w=3);
+    translate([0,0,15+4.5]) hollow_cyl3(d1=15,d2=13, h=4.5, w=3);
     difference() {
-        translate([0,0,20+4.5+4.5]) hollow_cyl(d=12, h=30, w=3);
-        translate([-50,0,20+4.5+4.5+30-5]) rotate([0,90,0]) cylinder(d=3, h=100);
+        translate([0,0,15+4.5+4.5]) hollow_cyl(d=13, h=45, w=2.5);
+        translate([-50,0,15+4.5+4.5+45-5]) rotate([0,90,0]) cylinder(d=3, h=100);
     }
     translate([0,0,40]) mount();
     translate([0,0,40]) mirror([0,1,0]) mount();
@@ -338,15 +338,15 @@ module axle1() {
     translate([0,0,20]) mirror([0,1,0]) mirror([1,0,0]) mount2();
     
     
-    translate([0,0,45/2]) %sakura_axle();
+    translate([0,0,65/2]) %sakura_axle();
 }
 module under_axle() {
     difference() {
         union() {
             axle1();
             mirror([0,0,1])axle1();
-            translate([0,0,190/2-15]) rotate([180,0,0])  %solid_adapter();
-            translate([0,0,-190/2+15]) mirror([0,0,1]) rotate([180,0,0])  %turn_adapter();
+            translate([0,0,190/2-5]) rotate([180,0,0])  %solid_adapter();
+            translate([0,0,-190/2+5]) mirror([0,0,1]) rotate([180,0,0])  %turn_adapter();
         }
         translate([0,-100,-100]) cube([200,200,200]);
     }
@@ -644,12 +644,14 @@ module display() {
     //translate([0,ll/2,20]) rotate([90,0,0]) %cylinder(d=12, h = 10);
     rotate([0,-90,0]) up_axle();
     %rotate([0,-90,0]) cover();
+    rotate([90,0,0])theworm();
+    wormdiff();
     //axle1();
     //up_axle();
     //translate([0,0,190/2-15]) rotate([180,0,0]) %solid_adapter();
     //solid_adapter();
 }
-//display();
+display();
 //turn_arm();
 // ############################
 // # Printer friendly
