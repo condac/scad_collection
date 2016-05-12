@@ -317,7 +317,7 @@ module mount2_gb_cut() {
 module axle1() {
     $fs= 0.9;
     hollow_cyl(d=38, h=10, w=3);
-    %translate([0,0,10]) hollow_cyl2(d1=38, d2=15, h=10, w=3);
+    translate([0,0,10]) hollow_cyl2(d1=38, d2=15, h=10, w=3);
     translate([0,0,20-2]) hollow_cyl3(d1=15,d2=12, h=2, w=3);
     color("red") translate([0,0,20]) hollow_cyl(d=15.5, h=4.5, w=3);
     translate([0,0,20+4.5]) hollow_cyl3(d1=15,d2=12, h=4.5, w=3);
@@ -525,6 +525,16 @@ module diff_arms_cut() {
 
 }
 
+module theworm() {
+    worm();
+    ll = 55;
+    difference() {
+        translate([0,20,-ll/2]) rotate([0,0,0]) cylinder(d=5, h = ll, $fn=32);
+        translate([0,20+10,-ll/2+3]) rotate([90,0,0]) cylinder(d=2.5, h = ll, $fn=32);
+        translate([0,20+10,ll/2-3]) rotate([90,0,0]) cylinder(d=2.5, h = ll, $fn=32);
+    }
+}
+
 
 module worm() {
 // #############Worm gear
@@ -547,64 +557,91 @@ offset=1;
 
 distance=radius+pitchRadius-0.5*pitch;
 
-translate([0,20,0])
-{
-translate([0,0,-position])
-rotate([0,0,180+angle])
-#trapezoidThreadThroated( 
-	length=length, 			// axial length of the threaded rod
-	pitch=pitch,				// axial distance from crest to crest
-	pitchRadius=radius, 		// radial distance from center to mid-profile
-	throatDistance=distance, 	// radial distance to center of curvature of throat 
-	throatRadius=pitchRadius, 	// radius of curvature of throat
-	throatHeight=position,		// axial distance to center of curvature of throat
-	threadHeightToPitch=0.5, 	// ratio between the height of the profile and the pitch
-						// std value for Acme or metric lead screw is 0.5
-	profileRatio=0.5,			// ratio between the lengths of the raised part of the profile and the pitch
-						// std value for Acme or metric lead screw is 0.5
-	threadAngle=22.5, 			// angle between the two faces of the thread
-						// std value for Acme is 29 or for metric lead screw is 30
-	RH=true, 				// true/false the thread winds clockwise looking along shaft, i.e.follows the Right Hand Rule
-	clearance=0.3, 			// radial clearance, normalized to thread height
-	backlash=0.1, 			// axial clearance, normalized to pitch
-	stepsPerTurn=24,			// number of slices to create per turn
-	showVertices=false
+translate([0,20,0]){
+    translate([0,0,-position])rotate([0,0,180+angle])trapezoidThreadThroated( 
+        length=length, 			// axial length of the threaded rod
+        pitch=pitch,				// axial distance from crest to crest
+        pitchRadius=radius, 		// radial distance from center to mid-profile
+        throatDistance=distance, 	// radial distance to center of curvature of throat 
+        throatRadius=pitchRadius, 	// radius of curvature of throat
+        throatHeight=position,		// axial distance to center of curvature of throat
+        threadHeightToPitch=0.5, 	// ratio between the height of the profile and the pitch
+                            // std value for Acme or metric lead screw is 0.5
+        profileRatio=0.5,			// ratio between the lengths of the raised part of the profile and the pitch
+                            // std value for Acme or metric lead screw is 0.5
+        threadAngle=22.5, 			// angle between the two faces of the thread
+                            // std value for Acme is 29 or for metric lead screw is 30
+        RH=true, 				// true/false the thread winds clockwise looking along shaft, i.e.follows the Right Hand Rule
+        clearance=0.3, 			// radial clearance, normalized to thread height
+        backlash=0.1, 			// axial clearance, normalized to pitch
+        stepsPerTurn=24,			// number of slices to create per turn
+        showVertices=false
 	);
 
 
-translate([-thickness/2,-distance,0])
-rotate([0,90,0])
-rotate([0,0,offset-angle/numberTeeth])
-gear ( 
-	number_of_teeth=numberTeeth,
-	circular_pitch=(360*pitchRadius/numberTeeth),
-	pressure_angle=22.5,
-	clearance = 0.2,
-	gear_thickness=thickness,
-	rim_thickness=thickness,
-	rim_width=5,
-	hub_thickness=thickness,
-	hub_diameter=10,
-	bore_diameter=5,
-	circles=0,
-	backlash=0.1,
-	twist=-pitchRadius/radius,
-	involute_facets=0,
-	flat=false);
+    //translate([-thickness/2,-distance,0])rotate([0,90,0])rotate([0,0,offset-angle/numberTeeth]) gear ( number_of_teeth=numberTeeth,circular_pitch=(360*pitchRadius/numberTeeth),pressure_angle=22.5,clearance = 0.2, gear_thickness=thickness,  rim_thickness=thickness, rim_width=5, hub_thickness=thickness,  hub_diameter=10, bore_diameter=5, circles=0, backlash=0.1, twist=-pitchRadius/radius,involute_facets=0,flat=false);
+};
+}
+module wormdiff() {
+// #############Worm gear
+
+
+
+numberTeeth=25;
+pitchRadius=15;
+thickness=10;
+$fs = 1;
+
+radius=7;
+pitch=2*3.14159*pitchRadius/numberTeeth;
+
+length=pitch*6;
+position=length/2;
+
+angle=-360*$t;
+offset=1;
+
+distance=radius+pitchRadius-0.5*pitch;
+
+translate([0,20,0]){
+    translate([0,0,-position])rotate([0,0,180+angle])%trapezoidThreadThroated( 
+        length=length, 			// axial length of the threaded rod
+        pitch=pitch,				// axial distance from crest to crest
+        pitchRadius=radius, 		// radial distance from center to mid-profile
+        throatDistance=distance, 	// radial distance to center of curvature of throat 
+        throatRadius=pitchRadius, 	// radius of curvature of throat
+        throatHeight=position,		// axial distance to center of curvature of throat
+        threadHeightToPitch=0.5, 	// ratio between the height of the profile and the pitch
+                            // std value for Acme or metric lead screw is 0.5
+        profileRatio=0.5,			// ratio between the lengths of the raised part of the profile and the pitch
+                            // std value for Acme or metric lead screw is 0.5
+        threadAngle=22.5, 			// angle between the two faces of the thread
+                            // std value for Acme is 29 or for metric lead screw is 30
+        RH=true, 				// true/false the thread winds clockwise looking along shaft, i.e.follows the Right Hand Rule
+        clearance=0.3, 			// radial clearance, normalized to thread height
+        backlash=0.1, 			// axial clearance, normalized to pitch
+        stepsPerTurn=24,			// number of slices to create per turn
+        showVertices=false
+	);
+
+difference() {
+       translate([-thickness/2,-distance,0])rotate([0,90,0])rotate([0,0,offset-angle/numberTeeth]) gear ( number_of_teeth=numberTeeth,circular_pitch=(360*pitchRadius/numberTeeth),pressure_angle=22.5,clearance = 0.2, gear_thickness=thickness,  rim_thickness=thickness, rim_width=5, hub_thickness=thickness,  hub_diameter=10, bore_diameter=5, circles=0, backlash=0.1, twist=-pitchRadius/radius,involute_facets=0,flat=false);
+        translate([-10,-20,0])rotate([0,90,0]) diff_arms_cut();
+    }
+        translate([-thickness/2,-distance,0])rotate([0,90,0])rotate([0,0,offset-angle/numberTeeth]) %gear ( number_of_teeth=numberTeeth,circular_pitch=(360*pitchRadius/numberTeeth),pressure_angle=22.5,clearance = 0.2, gear_thickness=thickness,  rim_thickness=thickness, rim_width=5, hub_thickness=thickness,  hub_diameter=10, bore_diameter=5, circles=0, backlash=0.1, twist=-pitchRadius/radius,involute_facets=0,flat=false);
 };
 
 
 // ####### End Worm gear ########
 
 }
-rotate([90,0,0]) worm();
+//rotate([90,0,0]) worm();
 module display() {
     $fs= 1;
     translate([5,0,0])rotate([0,90,0]) diff_arms();
     //rotate([0,-90,0]) under_axle();
-    ll = 55;
-    translate([0,ll/2,20]) rotate([90,0,0]) cylinder(d=5, h = ll);
-    translate([0,ll/2,20]) rotate([90,0,0]) %cylinder(d=12, h = 10);
+
+    //translate([0,ll/2,20]) rotate([90,0,0]) %cylinder(d=12, h = 10);
     rotate([0,-90,0]) up_axle();
     %rotate([0,-90,0]) cover();
     //axle1();
@@ -612,12 +649,12 @@ module display() {
     //translate([0,0,190/2-15]) rotate([180,0,0]) %solid_adapter();
     //solid_adapter();
 }
-display();
+//display();
 //turn_arm();
 // ############################
 // # Printer friendly
 //rotate([180,90,0]) diffgear();
-translate([5,0,0])rotate([0,90,0]) diff_arms();
+//translate([5,0,0])rotate([0,90,0]) diff_arms();
 //rotate([0,90,0]) under_axle();
 //rotate([0,-90,0]) up_axle();
 //rotate([-90,0,0]) holder();
@@ -625,3 +662,6 @@ translate([5,0,0])rotate([0,90,0]) diff_arms();
 //rotate([0,180,0]) turn_hub();
 //solid_adapter();
 //pinion();
+//theworm();
+//rotate([0,90,0]) wormdiff();
+rotate([0,-90,0])  cover();
