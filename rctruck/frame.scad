@@ -99,6 +99,7 @@ module link1() {
         translate([0,y-3,z/2]) rotate([0,90,0]) cylinder(d=3,h=z*4);
         mirror([0,1,0]) translate([0,y-3,z/2]) rotate([0,90,0]) cylinder(d=3,h=z*4);
         translate([0,0,-1]) cylinder(d=22,h=z+2);
+        translate([45,-100,0])  cylinder(d=3,h=z*4);
     }
     
 }
