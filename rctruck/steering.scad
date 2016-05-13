@@ -32,7 +32,8 @@ module steering_link() {
     }
 }
 //link(68*2, 3);
-steering_link();
+//steering_link();
+//link(75,3);
 
 module hollow_cyl(d, w, h) {
     $fs= 0.9;
@@ -79,3 +80,22 @@ module susp_mount2() {
     }
     translate([0,50,0]) hollow_cyl(d=hole, w=wall, h=13+thick);
 }
+module link_mount() {
+     $fs= 0.9;
+    hole = 3;
+    wall = 2;
+    thick = 3;
+    difference() {
+        hull() {    
+            translate([10,8/2,0]) hollow_cyl(d=hole, w=wall, h=thick);
+            translate([-10,8/2,0]) hollow_cyl(d=hole, w=wall, h=thick);
+            translate([0,24,0]) hollow_cyl(d=hole, w=wall, h=thick);
+        }
+        //translate([0,0,-1]) cylinder(d=19, h=thick*2);
+        translate([10,8/2,0]) cylinder(d=hole, h=thick*2);
+        translate([-10,8/2,0]) cylinder(d=hole, h=thick*2);
+        translate([0,24,0]) cylinder(d=hole, h=thick*2);
+    }
+    //translate([0,24,0]) hollow_cyl(d=hole, w=wall, h=13+thick);
+}
+link_mount();
