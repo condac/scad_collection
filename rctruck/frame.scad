@@ -1,5 +1,5 @@
 h=18;
-x= 80;
+x= 60;
 wall = 4;
 $fs=1;
 module f8x16() {
@@ -42,7 +42,7 @@ module screw_cut_y(length) {
 }
 f8x16();
 
-translate([90,0,0])f8x(80);
-translate([90,80,0])f8x(80);
+//translate([90,0,0])f8x(80);
+//translate([90,80,0])f8x(80);
 
-translate([90,-10 -40,0])f8x(40);
+//translate([90,-10 -40,0])f8x(40);
