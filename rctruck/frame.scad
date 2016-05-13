@@ -44,7 +44,7 @@ module servo_frame() {
     screw_d = 2.9;
     difference() {
         union() {
-            translate([-x/2,-5,-1]) cube([x, 10,1]);
+            translate([-x/2,-4,-1]) cube([x, 8,1]);
             translate([-x/2+wall,-8/2,0]) cube([x-wall*2-0.5, 8,h/2+1.5+1]);
         }
         for (a =[0:5:x-wall*2-10]) {
@@ -105,7 +105,7 @@ module link1() {
 }
 link1();
 //f8x16();
-//translate([0,10,0])servo_frame();
+translate([0,10,0])servo_frame();
 //translate([90,0,0])f8x(80);
 //translate([90,80,0])f8x(80);
 
