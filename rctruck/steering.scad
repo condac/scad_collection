@@ -47,4 +47,23 @@ module susp_mount() {
         translate([0,8+7,0]) cylinder(d=hole, h=thick*2);
     }
 }
-susp_mount();
+susp_mount2();
+
+module susp_mount2() {
+     $fs= 0.9;
+    hole = 3;
+    wall = 2;
+    thick = 3;
+    difference() {
+        hull() {    
+            translate([10,8/2,0]) hollow_cyl(d=hole, w=wall, h=thick);
+            translate([-10,8/2,0]) hollow_cyl(d=hole, w=wall, h=thick);
+            translate([0,50,0]) hollow_cyl(d=hole, w=wall, h=thick);
+        }
+        //translate([0,0,-1]) cylinder(d=19, h=thick*2);
+        translate([10,8/2,0]) cylinder(d=hole, h=thick*2);
+        translate([-10,8/2,0]) cylinder(d=hole, h=thick*2);
+        translate([0,50,0]) cylinder(d=hole, h=thick*2);
+    }
+    translate([0,50,0]) hollow_cyl(d=hole, w=wall, h=13+thick);
+}
