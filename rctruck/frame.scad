@@ -58,6 +58,38 @@ module servo_frame() {
     //translate([0,0,0]) cylinder(d=3, h=20);
     //translate([0,48.5,0]) cylinder(d=3, h=20);
 }
+servo_mount2();
+module servo_mount2() {
+    m_x=56;
+    m_y=32;
+    m_z=15;
+    
+    s_x=41;
+    s_y=21;
+    s_z=15;
+    
+    screw_d = 2.9;
+    
+    difference() {
+        translate([-m_x/2,0,0]) cube([m_x,m_y,m_z]);
+        translate([-s_x/2,0,0]) cube([s_x,s_y,s_z]);
+        
+        //servo screws
+        translate([50/2,5,0])  cylinder(d=screw_d, h=x*2);
+        translate([50/2,5+10,0])  cylinder(d=screw_d, h=x*2);
+        translate([-50/2,5,0])  cylinder(d=screw_d, h=x*2);
+        translate([-50/2,5+10,0])  cylinder(d=screw_d, h=x*2);
+        
+        // frame cuts
+        translate([(x-wall*2-0.5)/2,     s_y-2,0]) cube([50,50,50]);
+        translate([(-x+wall*2+0.5)/2-50, s_y-2,0]) cube([50,50,50]);
+        
+        // frame screws
+        translate([-60/2, 20+18/2, 5/2+10]) rotate([0,90,0]) %cylinder(d=screw_d, h=x*2);
+        translate([-60/2, 20+18/2, 5/2]) rotate([0,90,0]) %cylinder(d=screw_d, h=x*2);
+        
+    }
+}
 module mount2() {
     $fs= 0.9;
     x = 8;
@@ -103,9 +135,9 @@ module link1() {
     }
     
 }
-link1();
+//link1();
 //f8x16();
-translate([0,10,0])servo_frame();
+//translate([0,10,0])servo_frame();
 //translate([90,0,0])f8x(80);
 //translate([90,80,0])f8x(80);
 
