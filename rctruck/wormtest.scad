@@ -496,18 +496,33 @@ module turn_adapter() {
     turn_arm();
     turn_hub();
 }
-module diff_arms() {
+module diff_arms_2() {
     $fs= 0.9;
     x = 20;
     ah = 45/2;
     slice = 2;
     difference() {
         union() {
-            translate([-x/2, -x/2, 0]) cube([x,x,2]);
-            cylinder(d=9.7, h= ah);
+            translate([0, 0, 5]) cylinder(d=6, h= ah, $fn=4);
+            translate([0, 0, 15]) cylinder(d=11.5, h= 15);
         }
-        translate([0, 0, 10])cylinder(d=6.3, h= ah);
-        translate([-slice/2, -10/2, 10]) cube([slice,10,20]);
+        translate([0, 0, 20])cylinder(d=6.4, h= ah);
+        translate([-slice/2, -10/2, 20]) cube([slice,10,20]);
+        
+    }
+}
+module diff_arms() {
+    $fs= 0.9;
+    x = 20;
+    ah = 45/2;
+    slice = 2;
+    %difference() {
+        union() {
+            translate([-x/2, -x/2, 0]) cube([x,x,2]);
+            cylinder(d=9.7, h= 15);
+        }
+        translate([0, 0, 0])cylinder(d=7, h= ah, $fn=4);
+        //translate([-slice/2, -10/2, 10]) cube([slice,10,20]);
         translate([0, 0, -5]) diff_arms_cut();
     }
 }
@@ -546,7 +561,7 @@ pitchRadius=15;
 thickness=10;
 $fs = 1;
 
-radius=7;
+radius=5;
 pitch=2*3.14159*pitchRadius/numberTeeth;
 
 length=pitch*6;
@@ -562,8 +577,8 @@ translate([0,20,0]){
         length=length, 			// axial length of the threaded rod
         pitch=pitch,				// axial distance from crest to crest
         pitchRadius=radius, 		// radial distance from center to mid-profile
-        throatDistance=distance, 	// radial distance to center of curvature of throat 
-        throatRadius=pitchRadius, 	// radius of curvature of throat
+        throatDistance=distance*10, 	// radial distance to center of curvature of throat 
+        throatRadius=pitchRadius*1, 	// radius of curvature of throat
         throatHeight=position,		// axial distance to center of curvature of throat
         threadHeightToPitch=0.5, 	// ratio between the height of the profile and the pitch
                             // std value for Acme or metric lead screw is 0.5
@@ -639,11 +654,12 @@ difference() {
 module display() {
     $fs= 1;
     translate([5,0,0])rotate([0,90,0]) diff_arms();
-    //rotate([0,-90,0]) under_axle();
+    translate([5,0,0])rotate([0,90,0]) diff_arms_2();
+    rotate([0,-90,0]) under_axle();
 
     //translate([0,ll/2,20]) rotate([90,0,0]) %cylinder(d=12, h = 10);
-    rotate([0,-90,0]) up_axle();
-    %rotate([0,-90,0]) cover();
+    //rotate([0,-90,0]) up_axle();
+    //%rotate([0,-90,0]) cover();
     rotate([90,0,0])theworm();
     wormdiff();
     //axle1();
@@ -666,4 +682,5 @@ display();
 //pinion();
 //theworm();
 //rotate([0,90,0]) wormdiff();
-rotate([0,-90,0])  cover();
+//rotate([0,-90,0])  cover();
+//translate([0,-20]) rotate([0,90,0])cylinder(d=2, h=68);
