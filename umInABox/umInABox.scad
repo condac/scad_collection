@@ -41,7 +41,7 @@ p_x = 350;
 p_y = 350;
 //translate([-p_x/2, -p_y/2,0]) %cube([p_x,p_y,10]);
 
-//visual();
+visual();
 module visual() {
     
 //Parts for visual:

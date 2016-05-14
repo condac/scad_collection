@@ -457,10 +457,10 @@ module diff_arms_cut() {
 
 module display() {
     //motor_cut();
-    //rotate([0,-90,0]) holder();
+    rotate([0,-90,0]) holder();
     
-    //rotate([0,-90,0]) all_gears();
-    //rotate([0,-90,0]) translate([0,0,-75]) motor();
+    rotate([0,-90,0]) all_gears();
+    rotate([0,-90,0]) translate([0,0,-75]) motor();
 
     rotate([0,-90,0]) translate([avst2-avst,avst,-9-9-9-5  -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,-180,-45]) under_axle();
     //rotate([0,-90,0]) translate([avst2-avst,avst,-9-9-9-5  -16/2]) rotate([0,180,-45]) translate([avst,0,0]) rotate([0,-180,-45]) up_axle();
@@ -469,7 +469,7 @@ module display() {
     //translate([0,0,190/2-15]) rotate([180,0,0]) %solid_adapter();
     //solid_adapter();
 }
-//display();
+display();
 //turn_arm();
 // ############################
 // # Printer friendly
