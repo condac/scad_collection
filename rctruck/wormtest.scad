@@ -521,6 +521,7 @@ module diff_arms() {
         union() {
             translate([-x/2, -x/2, 0]) cube([x,x,2]);
             cylinder(d=9.7, h= 15);
+            cylinder(d=11, h= 9);
         }
         translate([0, 0, 0])cylinder(d=7, h= ah, $fn=4);
         //translate([-slice/2, -10/2, 10]) cube([slice,10,20]);
@@ -668,13 +669,13 @@ module display() {
     //translate([0,0,190/2-15]) rotate([180,0,0]) %solid_adapter();
     //solid_adapter();
 }
-//display();
+display();
 //turn_arm();
 // ############################
 // # Printer friendly
 //rotate([180,90,0]) diffgear();
 translate([5,0,0])rotate([0,180,0]) diff_arms_2();
-//translate([5,0,0])rotate([0,0,0]) diff_arms();
+translate([5,0,0])rotate([0,0,0]) diff_arms();
 //rotate([0,90,0]) under_axle();
 //rotate([0,-90,0]) up_axle();
 //rotate([-90,0,0]) holder();
