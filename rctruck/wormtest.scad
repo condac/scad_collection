@@ -506,8 +506,9 @@ module diff_arms_2() {
             translate([0, 0, 5]) cylinder(d=6, h= ah, $fn=4);
             translate([0, 0, 15]) cylinder(d=11.5, h= 15);
         }
-        translate([0, 0, 20])cylinder(d=6.4, h= ah);
+        translate([0, 0, 20])cylinder(d=6.5, h= ah);
         translate([-slice/2, -10/2, 20]) cube([slice,10,20]);
+        translate([0, 0, 30-0.99])cylinder(d2=11, d1=7, h=1);
         
     }
 }
@@ -516,7 +517,7 @@ module diff_arms() {
     x = 20;
     ah = 45/2;
     slice = 2;
-    %difference() {
+    difference() {
         union() {
             translate([-x/2, -x/2, 0]) cube([x,x,2]);
             cylinder(d=9.7, h= 15);
@@ -667,12 +668,13 @@ module display() {
     //translate([0,0,190/2-15]) rotate([180,0,0]) %solid_adapter();
     //solid_adapter();
 }
-display();
+//display();
 //turn_arm();
 // ############################
 // # Printer friendly
 //rotate([180,90,0]) diffgear();
-//translate([5,0,0])rotate([0,90,0]) diff_arms();
+translate([5,0,0])rotate([0,180,0]) diff_arms_2();
+//translate([5,0,0])rotate([0,0,0]) diff_arms();
 //rotate([0,90,0]) under_axle();
 //rotate([0,-90,0]) up_axle();
 //rotate([-90,0,0]) holder();
