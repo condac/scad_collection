@@ -9,6 +9,6 @@ difference() {
     xx=17;
     translate([-xx/2,0,0]) cube([xx,15,45]);
     
-    translate([0,-45/2-20/2-wall,45/2]) rotate([0,90,0])cylinder(d=32, h=4);
+    translate([-1,-45/2-20/2-wall,45/2]) rotate([0,90,0])cylinder(d=32, h=6);
     
 }
