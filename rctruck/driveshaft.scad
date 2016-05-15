@@ -1,7 +1,7 @@
 shaft_d = 5.1;
 shaft_pin = 2.5;
 mount_d = 6;
-mount_pin = 3;
+mount_pin = 2;
 d = 10;
 h0 = 6;
 h1 = 18;
@@ -45,7 +45,7 @@ module fork_male() {
         union() {
             fork();
             //translate([0,0,-l+8])cylinder(d=10, h=l);
-            translate([0,0,-l+8])cylinder(d=7, h=l, $fn=4);
+            translate([0,0,-l+8])cylinder(d=6.5, h=l, $fn=4);
         }
         
     }
@@ -71,6 +71,7 @@ module fork_big() {
             translate([0,0,-l+8])cylinder(d=14, h=l);
         }
         translate([0,0,-l+8])cylinder(d=11, h=l, $fn=4);
+        translate([-30,0,0]) rotate([0,90,0]) cylinder(d= shaft_pin, h= 60);
     }
     
 }
