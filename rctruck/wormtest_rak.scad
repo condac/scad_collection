@@ -713,7 +713,7 @@ module display() {
     //translate([0,0,190/2-15]) rotate([180,0,0]) %solid_adapter();
     //solid_adapter();
 }
-display();
+//display();
 //turn_arm();
 // ############################
 // # Printer friendly
@@ -726,6 +726,6 @@ display();
 //rotate([0,180,0]) turn_hub();
 //solid_adapter();
 //pinion();
-//theworm();
+theworm();
 //rotate([0,90,0]) wormdiff();
 //rotate([0,-90,0])  cover();

@@ -16,8 +16,8 @@ translate([0, -60-5, output_h+46/2+14/2]) rotate([-90,0,0]) %motor();
 translate([0,10,output_h]) rotate([90,0,0]) cover1();
 }
 //gear_holder();
-//motormount();
-display();
+motormount();
+//display();
 //cover1();
 module gear_holder() {
     
