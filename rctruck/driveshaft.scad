@@ -68,9 +68,9 @@ module fork_big() {
     difference() {
         union() {
             fork();
-            translate([0,0,-l+8])cylinder(d=12, h=l);
+            translate([0,0,-l+8])cylinder(d=14, h=l);
         }
-        translate([0,0,-l+8])cylinder(d=10, h=l, $fn=4);
+        translate([0,0,-l+8])cylinder(d=11, h=l, $fn=4);
     }
     
 }
