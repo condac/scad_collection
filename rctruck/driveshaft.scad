@@ -39,6 +39,41 @@ module fork() {
         translate([0,w1/2,h1]) rotate([90,0,0]) cylinder(d=mount_pin, h=w1);
     }
 }
+module fork_male() {
+    l = 50;
+    difference() {
+        union() {
+            fork();
+            //translate([0,0,-l+8])cylinder(d=10, h=l);
+            translate([0,0,-l+8])cylinder(d=7, h=l, $fn=4);
+        }
+        
+    }
+    
+}
+
+module fork_female() {
+    l = 50;
+    difference() {
+        union() {
+            fork();
+            translate([0,0,-l+8])cylinder(d=10, h=l);
+        }
+        translate([0,0,-l+8])cylinder(d=7.5, h=l, $fn=4);
+    }
+    
+}
+module fork_big() {
+    l = 15;
+    difference() {
+        union() {
+            fork();
+            translate([0,0,-l+8])cylinder(d=12, h=l);
+        }
+        translate([0,0,-l+8])cylinder(d=10, h=l, $fn=4);
+    }
+    
+}
 module ball() {
     $fs=0.5;
     difference() { 
@@ -56,4 +91,7 @@ module display() {
 
 }
 //fork();
-ball();
+//ball();
+//fork_male();
+//fork_female();
+fork_big();
