@@ -8,15 +8,23 @@ module under_axle() {
             mirror([0,0,1])axle1();
             translate([0,0,190/2-5]) rotate([180,0,0])  %solid_adapter();
             translate([0,0,-190/2+5]) mirror([0,0,1]) rotate([180,0,0])  %turn_adapter();
+            
+            // Bearing bevel axel
+            translate([0,17.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=1, w=3);
+            color("red") translate([0,18.5,0]) rotate([-90,0,0]) hollow_cyl(d=15.5, h=4.5, w=3);
+            translate([0,18.5+4.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=1, w=3);
         }
         translate([0,-100,-100]) cube([200,200,200]);
+        color("red") translate([0,18.5,0]) rotate([-90,0,0]) cylinder(d=15.5, h=4.5);
+        color("red") translate([0,17.5,0]) rotate([-90,0,0]) cylinder(d=14.5, h=14.5);
     }
 }
 module axle1() {
     $fs= 0.9;
-    hollow_cyl(d=38, h=10, w=3);
-    translate([0,0,10]) hollow_cyl2(d1=38, d2=15, h=10, w=3);
-    translate([0,0,15-2]) hollow_cyl(d=14.5, h=2, w=3);
+    hollow_cyl(d=38, h=10, w=2);
+    translate([0,0,10]) hollow_cyl2(d1=38, d2=15, h=10, w=2);
+    
+    translate([0,0,15-0.5]) hollow_cyl(d=14.5, h=0.5, w=3);
     color("red") translate([0,0,15]) hollow_cyl(d=15.5, h=4.5, w=3);
     translate([0,0,15+4.5]) hollow_cyl3(d1=15,d2=13, h=4.5, w=3);
     difference() {
@@ -232,9 +240,8 @@ module diff() {
             
             translate([0, 0, -b2b/2]) cylinder(d=9.7, h= b2b);
             translate([0, 0, -b2b2/2]) cylinder(d=11, h= b2b2);
-            cylinder() {
-                
-            }
+            translate([0,0,-b2b2/2+0.5]) cylinder(d1=11, d2=32, h= 6);
+            translate([0,0,-4]) cylinder(d1=20, d2=11, h= 6);
         }
         translate([0, 0, -b2b/2])cylinder(d=7, h= b2b, $fn=4);
         //translate([-slice/2, -10/2, 10]) cube([slice,10,20]);
@@ -245,7 +252,6 @@ module diff_arms() {
     $fs= 0.9;
     x = 20;
     ah = 45/2;
-    slice = 2;
     difference() {
         union() {
             translate([-x/2, -x/2, 0]) cube([x,x,2]);
@@ -253,7 +259,6 @@ module diff_arms() {
             cylinder(d=11, h= 9);
         }
         translate([0, 0, 0])cylinder(d=7, h= ah, $fn=4);
-        //translate([-slice/2, -10/2, 10]) cube([slice,10,20]);
         translate([0, 0, -5]) diff_arms_cut();
     }
 }
@@ -272,7 +277,12 @@ module diff_arms_cut() {
 }
 module bevelgear() {
     bevel_gear_pair2_gear();
-    translate([0,10+11,0]) rotate([90,0,0]) cylinder(d=9.7, h=10);
+    hh= 12;
+    hh2= 22;
+    hh3 = 1.5;
+    translate([0,hh+16,0]) rotate([90,0,0]) cylinder(d=9.7, h=hh);
+    translate([0,hh2+16,0]) rotate([90,0,0]) cylinder(d=9.7, h=hh2, $fn=4);
+    translate([0,hh3+16,0]) rotate([90,0,0]) cylinder(d=12, h=hh3);
 }
 module display() {
     under_axle();
