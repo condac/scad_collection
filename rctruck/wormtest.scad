@@ -563,7 +563,7 @@ pitchRadius=15;
 thickness=10;
 $fs = 1;
 
-radius=5;
+radius=5.4;
 pitch=2*3.14159*pitchRadius/numberTeeth;
 
 length=pitch*6;
@@ -589,7 +589,7 @@ translate([0,20,0]){
         threadAngle=22.5, 			// angle between the two faces of the thread
                             // std value for Acme is 29 or for metric lead screw is 30
         RH=true, 				// true/false the thread winds clockwise looking along shaft, i.e.follows the Right Hand Rule
-        clearance=0.3, 			// radial clearance, normalized to thread height
+        clearance=0.5, 			// radial clearance, normalized to thread height
         backlash=0.1, 			// axial clearance, normalized to pitch
         stepsPerTurn=24,			// number of slices to create per turn
         showVertices=false
@@ -669,13 +669,13 @@ module display() {
     //translate([0,0,190/2-15]) rotate([180,0,0]) %solid_adapter();
     //solid_adapter();
 }
-display();
+//display();
 //turn_arm();
 // ############################
 // # Printer friendly
 //rotate([180,90,0]) diffgear();
-translate([5,0,0])rotate([0,180,0]) diff_arms_2();
-translate([5,0,0])rotate([0,0,0]) diff_arms();
+//translate([5,0,0])rotate([0,180,0]) diff_arms_2();
+//translate([5,0,0])rotate([0,0,0]) diff_arms();
 //rotate([0,90,0]) under_axle();
 //rotate([0,-90,0]) up_axle();
 //rotate([-90,0,0]) holder();
@@ -683,7 +683,8 @@ translate([5,0,0])rotate([0,0,0]) diff_arms();
 //rotate([0,180,0]) turn_hub();
 //solid_adapter();
 //pinion();
-//theworm();
+theworm();
+//rotate([0,0,90])rotate([0,90,0])theworm();
 //rotate([0,90,0]) wormdiff();
 //rotate([0,-90,0])  cover();
 //translate([0,-20]) rotate([0,90,0])cylinder(d=2, h=68);
