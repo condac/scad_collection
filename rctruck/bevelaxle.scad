@@ -166,10 +166,10 @@ module turn_adapter() {
 
 
 module bevel_gear_pair2_diff () {
-    gear1_teeth = 40;
-	gear2_teeth = 16;
+    gear1_teeth = 32;
+	gear2_teeth = 11;
 	axis_angle = 90;
-	outside_circular_pitch=150;
+	outside_circular_pitch=170;
     
 	outside_pitch_radius1 = gear1_teeth * outside_circular_pitch / 360;
 	outside_pitch_radius2 = gear2_teeth * outside_circular_pitch / 360;
@@ -197,10 +197,10 @@ module bevel_gear_pair2_diff () {
 	}
 }
 module bevel_gear_pair2_gear () {
-    gear1_teeth = 40;
-	gear2_teeth = 16;
+    gear1_teeth = 32;
+	gear2_teeth = 11;
 	axis_angle = 90;
-	outside_circular_pitch=150;
+	outside_circular_pitch=170;
     
 	outside_pitch_radius1 = gear1_teeth * outside_circular_pitch / 360;
 	outside_pitch_radius2 = gear2_teeth * outside_circular_pitch / 360;
@@ -240,8 +240,8 @@ module diff() {
             
             translate([0, 0, -b2b/2]) cylinder(d=9.7, h= b2b);
             translate([0, 0, -b2b2/2]) cylinder(d=11, h= b2b2);
-            translate([0,0,-b2b2/2+0.5]) cylinder(d1=11, d2=32, h= 6);
-            translate([0,0,-4]) cylinder(d1=20, d2=11, h= 6);
+            translate([0,0,-b2b2/2+0.5]) cylinder(d1=11, d2=30, h= 7.5);
+            translate([0,0,-4]) cylinder(d1=18, d2=11, h= 6);
         }
         translate([0, 0, -b2b/2])cylinder(d=7, h= b2b, $fn=4);
         //translate([-slice/2, -10/2, 10]) cube([slice,10,20]);
@@ -280,9 +280,10 @@ module bevelgear() {
     hh= 12;
     hh2= 22;
     hh3 = 1.5;
+    translate([0,hh+14,0]) rotate([90,0,0]) cylinder(d=7, h=hh);
     translate([0,hh+16,0]) rotate([90,0,0]) cylinder(d=9.7, h=hh);
     translate([0,hh2+16,0]) rotate([90,0,0]) cylinder(d=9.7, h=hh2, $fn=4);
-    translate([0,hh3+16,0]) rotate([90,0,0]) cylinder(d=12, h=hh3);
+    translate([0,hh3+16.5,0]) rotate([90,0,0]) cylinder(d=12, h=hh3);
 }
 module display() {
     under_axle();
