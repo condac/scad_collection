@@ -85,8 +85,8 @@ module servo_mount2() {
         translate([(-x+wall*2+0.5)/2-50, s_y-2,0]) cube([50,50,50]);
         
         // frame screws
-        translate([-60/2, 20+18/2, 5/2+10]) rotate([0,90,0]) %cylinder(d=screw_d, h=x*2);
-        translate([-60/2, 20+18/2, 5/2]) rotate([0,90,0]) %cylinder(d=screw_d, h=x*2);
+        translate([-60/2, 20+18/2, 5/2+10]) rotate([0,90,0]) cylinder(d=screw_d, h=x*2);
+        translate([-60/2, 20+18/2, 5/2]) rotate([0,90,0]) cylinder(d=screw_d, h=x*2);
         
     }
 }

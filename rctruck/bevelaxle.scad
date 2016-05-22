@@ -363,16 +363,16 @@ module bevelgear() {
     translate([0,hh3+15,0]) rotate([90,0,0]) cylinder(d=11, h=1);
 }
 module display() {
-    //under_axle();
+    dual_axle();
     //bevel_gear_pair2_gear ();
     diff();
     bevelgear();
     
 }
-//display();
+display();
 
 //rotate([90,0,0]) bevelgear();
-rotate([0,90,0]) dual_axle();
+//rotate([0,90,0]) dual_axle();
 //diff();
 //rotate([0,90,0])under_axle();
 //diff_arms_2();

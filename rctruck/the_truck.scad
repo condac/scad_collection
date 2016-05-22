@@ -25,7 +25,7 @@ module hjul() {
     translate([hex2hex/2,0,0])  ett_hjul();
     translate([-hex2hex/2,0,0]) rotate([0,0,180]) ett_hjul();
     
-    rotate([180,0,0])  rotate([0,90,0]) under_axle();
+    rotate([180,0,0])  rotate([0,90,0]) dual7_axle();
     rotate([180,0,0])  rotate([0,90,0]) up_axle();
 }
 module ett_hjul() {

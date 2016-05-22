@@ -360,7 +360,7 @@ module display() {
 //turn_arm();
 // ############################
 // # Printer friendly
-rotate([180,0,0]) diffgear();
+//rotate([180,0,0]) diffgear();
 //rotate([180,0,0]) gears_2();
 //diff_arms();
 //rotate([0,90,0]) under_axle();
@@ -369,4 +369,4 @@ rotate([180,0,0]) diffgear();
 //turn_arm();
 //rotate([0,180,0]) turn_hub();
 //solid_adapter();
-//pinion();
+pinion();
