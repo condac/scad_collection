@@ -17,6 +17,10 @@ module under_axle() {
             translate([0,16+4.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=2, w=3);
             color("red") translate([0,16+4.5+2,0]) rotate([-90,0,0]) hollow_cyl(d=15.5, h=4.5, w=3);
             translate([0,16+4.5+2+4.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=1, w=3);
+            
+            //extra screw mount
+            translate([0,16+4.5+2,13]) rotate([0,-90,0]) hollow_cyl(d=3, h=5, w=3);
+            translate([0,16+4.5+2,-13]) rotate([0,-90,0]) hollow_cyl(d=3, h=5, w=3);
         }
         translate([0,-100,-100]) cube([200,200,200]);
         color("red") translate([0,16,0]) rotate([-90,0,0]) cylinder(d=15.5, h=4.5);
@@ -319,5 +323,5 @@ module display() {
 
 //rotate([90,0,0]) bevelgear();
 //diff();
-//rotate([0,90,0])under_axle();
-diff_arms_2();
+rotate([0,90,0])under_axle();
+//diff_arms_2();
