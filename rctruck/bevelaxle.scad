@@ -10,12 +10,16 @@ module under_axle() {
             translate([0,0,-190/2+5]) mirror([0,0,1]) rotate([180,0,0])  %turn_adapter();
             
             // Bearing bevel axel
-            translate([0,17.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=1, w=3);
-            color("red") translate([0,18.5,0]) rotate([-90,0,0]) hollow_cyl(d=15.5, h=4.5, w=3);
-            translate([0,18.5+4.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=1, w=3);
+            //translate([0,17.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=1, w=3);
+            color("red") translate([0,16,0]) rotate([-90,0,0]) hollow_cyl(d=15.5, h=4.5, w=3);
+            //translate([0,18.5+4.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=1, w=3);
+            
+            translate([0,16+4.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=2, w=3);
+            color("red") translate([0,16+4.5+2,0]) rotate([-90,0,0]) hollow_cyl(d=15.5, h=4.5, w=3);
+            translate([0,16+4.5+2+4.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=1, w=3);
         }
         translate([0,-100,-100]) cube([200,200,200]);
-        color("red") translate([0,18.5,0]) rotate([-90,0,0]) cylinder(d=15.5, h=4.5);
+        color("red") translate([0,16,0]) rotate([-90,0,0]) cylinder(d=15.5, h=4.5);
         color("red") translate([0,17.5,0]) rotate([-90,0,0]) cylinder(d=14.5, h=14.5);
     }
 }
@@ -243,7 +247,7 @@ module diff() {
             translate([0,0,-b2b2/2+0.5]) cylinder(d1=11, d2=30, h= 7.5);
             translate([0,0,-4]) cylinder(d1=18, d2=11, h= 6);
         }
-        translate([0, 0, -b2b/2])cylinder(d=7, h= b2b, $fn=4);
+        translate([0, 0, -b2b/2])cylinder(d=7.5, h= b2b, $fn=4);
         //translate([-slice/2, -10/2, 10]) cube([slice,10,20]);
         
     }
@@ -282,13 +286,17 @@ module bevelgear() {
     hh3 = 1.5;
     translate([0,hh+14,0]) rotate([90,0,0]) cylinder(d=7, h=hh);
     translate([0,hh+16,0]) rotate([90,0,0]) cylinder(d=9.7, h=hh);
-    translate([0,hh2+16,0]) rotate([90,0,0]) cylinder(d=9.7, h=hh2, $fn=4);
-    translate([0,hh3+16.5,0]) rotate([90,0,0]) cylinder(d=12, h=hh3);
+    difference() {
+        translate([0,hh2+16,0]) rotate([90,45,0]) cylinder(d=9.7, h=hh2, $fn=4);
+        translate([-5,hh2+12,0]) rotate([0,90,0]) cylinder(d=2.5, h=hh);
+    }
+    translate([0,hh3+15,0]) rotate([90,0,0]) cylinder(d=11, h=1);
 }
 module display() {
-    under_axle();
+    //under_axle();
     //bevel_gear_pair2_gear ();
     diff();
     bevelgear();
+    
 }
 display();
