@@ -248,6 +248,22 @@ module diff() {
         
     }
 }
+module diff_arms_2() {
+    $fs= 0.9;
+    x = 20;
+    ah = 45/2;
+    slice = 2;
+    difference() {
+        union() {
+            translate([0, 0, 5]) cylinder(d=6, h= ah, $fn=4);
+            translate([0, 0, 15]) cylinder(d=11.5, h= 15);
+        }
+        translate([0, 0, 20])cylinder(d=6.5, h= ah);
+        translate([-slice/2, -10/2, 20]) cube([slice,10,20]);
+        translate([0, 0, 30-0.99])cylinder(d2=11, d1=7, h=1);
+        
+    }
+}
 module diff_arms() {
     $fs= 0.9;
     x = 20;
@@ -291,4 +307,9 @@ module display() {
     diff();
     bevelgear();
 }
-display();
+//display();
+
+//rotate([90,0,0]) bevelgear();
+//diff();
+//rotate([0,90,0])under_axle();
+diff_arms_2();
