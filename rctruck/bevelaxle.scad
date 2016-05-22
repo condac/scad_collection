@@ -27,6 +27,56 @@ module under_axle() {
         color("red") translate([0,17.5,0]) rotate([-90,0,0]) cylinder(d=14.5, h=14.5);
     }
 }
+module dual_axle() {
+
+    difference() {
+        union() {
+            axle1();
+            mirror([0,0,1])axle1();
+            translate([0,0,190/2-5]) rotate([180,0,0])  %solid_adapter();
+            translate([0,0,-190/2+5]) mirror([0,0,1]) rotate([180,0,0])  %turn_adapter();
+            
+            union() {// Bearing bevel axel
+                //translate([0,17.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=1, w=3);
+                color("red") translate([0,16,0]) rotate([-90,0,0]) hollow_cyl(d=15.5, h=4.5, w=3);
+                //translate([0,18.5+4.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=1, w=3);
+                
+                translate([0,16+4.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=2, w=3);
+                color("red") translate([0,16+4.5+2,0]) rotate([-90,0,0]) hollow_cyl(d=15.5, h=4.5, w=3);
+                translate([0,16+4.5+2+4.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=1, w=3);
+                
+                //extra screw mount
+                translate([0,16+4.5+2,13]) rotate([0,-90,0]) hollow_cyl(d=3, h=5, w=3);
+                translate([0,16+4.5+2,-13]) rotate([0,-90,0]) hollow_cyl(d=3, h=5, w=3);
+            }
+            mirror([0,1,0]) union() {// Bearing bevel axel copy mirror
+                //translate([0,17.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=1, w=3);
+                color("red") translate([0,16,0]) rotate([-90,0,0]) hollow_cyl(d=15.5, h=4.5, w=3);
+                //translate([0,18.5+4.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=1, w=3);
+                
+                translate([0,16+4.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=2, w=3);
+                color("red") translate([0,16+4.5+2,0]) rotate([-90,0,0]) hollow_cyl(d=15.5, h=4.5, w=3);
+                translate([0,16+4.5+2+4.5,0]) rotate([-90,0,0]) hollow_cyl(d=14.5, h=1, w=3);
+                
+                //extra screw mount
+                translate([0,16+4.5+2,13]) rotate([0,-90,0]) hollow_cyl(d=3, h=5, w=3);
+                translate([0,16+4.5+2,-13]) rotate([0,-90,0]) hollow_cyl(d=3, h=5, w=3);
+            }
+        }
+        translate([0,-100,-100]) cube([200,200,200]);
+        union() {
+            color("red") translate([0,16,0]) rotate([-90,0,0]) cylinder(d=15.5, h=4.5);
+            color("red") translate([0,17.5,0]) rotate([-90,0,0]) cylinder(d=14.5, h=14.5);
+        }
+        
+        mirror([0,1,0]) union() {
+            color("red") translate([0,16,0]) rotate([-90,0,0]) cylinder(d=15.5, h=4.5);
+            color("red") translate([0,17.5,0]) rotate([-90,0,0]) cylinder(d=14.5, h=14.5);
+        }
+    }
+
+}
+
 module axle1() {
     $fs= 0.9;
     hollow_cyl(d=38, h=10, w=2);
@@ -322,6 +372,7 @@ module display() {
 //display();
 
 //rotate([90,0,0]) bevelgear();
+rotate([0,90,0]) dual_axle();
 //diff();
-rotate([0,90,0])under_axle();
+//rotate([0,90,0])under_axle();
 //diff_arms_2();
