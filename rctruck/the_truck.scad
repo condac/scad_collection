@@ -1,8 +1,8 @@
 
 use <frame.scad>
 use <wormtest.scad>
-
-fh = 30;
+use <bevelaxle.scad>
+fh = 55;
 h_d = 110;
 h_w = 48;
 hex2hex = 192;
@@ -34,4 +34,4 @@ module ett_hjul() {
     }
     
 }
-ett_hjul();
+//ett_hjul();
