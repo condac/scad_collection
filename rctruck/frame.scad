@@ -58,7 +58,7 @@ module servo_frame() {
     //translate([0,0,0]) cylinder(d=3, h=20);
     //translate([0,48.5,0]) cylinder(d=3, h=20);
 }
-servo_mount2();
+
 module servo_mount2() {
     m_x=56;
     m_y=32;
@@ -135,10 +135,10 @@ module link1() {
     }
     
 }
-//link1();
+link1();
 //f8x16();
 //translate([0,10,0])servo_frame();
 //translate([90,0,0])f8x(80);
 //translate([90,80,0])f8x(80);
-
+//servo_mount2();
 //translate([90,-10 -40,0])f8x(40);
