@@ -13,9 +13,9 @@ gt2_h = 13;
 gt2_bw = 8;
 wood_thickness = 13;
 wood_t = wood_thickness;
-bearing_d = 22;
+bearing_d = 16; // skateboard 22 litet 16
 bearing_h = 7;
-bearing_extra = 0.1;
+bearing_extra = 0.2;
 
 coupler_length = 25;
 coupler_d = 19;
@@ -30,18 +30,18 @@ rod_ws = 30;
 fn = 32;
 
 // Parts you need to print
-//rotate([0,-90,0]) mirror([0,1,0]) mount1(); // 2pcs
+rotate([0,-90,0]) mirror([0,1,0]) mount1(); // 2pcs
 //rotate([0,-90,0]) mirror([0,0,0]) mount1(); // 2pcs
-// rotate([0,-90,0]) xmotor(); // 1pcs
-// rotate([0,90,0]) ymotor(); // 1pcs
+//rotate([0,-90,0]) xmotor(); // 1pcs
+//rotate([0,90,0]) ymotor(); // 1pcs
  // 4pcs https://www.youmagine.com/designs/open-xy-blocks-with-adjustable-belt-tension-for-original-ultimaker-8mm-gantry-rods
 
 
 p_x = 350;
 p_y = 350;
 //translate([-p_x/2, -p_y/2,0]) %cube([p_x,p_y,10]);
-
-visual();
+//mount1();
+//visual();
 module visual() {
     
 //Parts for visual:
@@ -250,6 +250,9 @@ module mount1() {
         translate([0,0,-h]) cube([x,wood_t, h]);
         translate([0,-rod_ws,rod_h-rod_space]) rotate([0,90,0])  cylinder(h= b_h+1, d=bearing_d+bearing_extra);
         translate([rod_ws,+wood_t+wall+1,rod_h])  rotate([0,0,-90]) rotate([0,90,0]) cylinder(h= b_h+1+wood_t+wall+1, d=bearing_d+bearing_extra);
+        
+        // motor mount block
+        translate([rod_ws,+wood_t+wall+1,rod_h])  rotate([0,0,-90]) rotate([0,90,0]) cylinder(h= 1+wood_t+wall, d=24);
         
         //M3 mounting screws
         translate([x/2,0,-h/4])rotate([-90,0,0])cylinder(d=3.1, h= x*2, $fn=fn);
