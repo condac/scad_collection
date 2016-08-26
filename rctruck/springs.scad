@@ -25,12 +25,12 @@ module spring_display() {
     translate([44,0,20]) rotate([-90,0,0]) rotate([0,90,0]) rotate([0,0,25])  link(60,2);
 
 }
-//spring_display();
+spring_display();
 // Printer friendly:
-translate([15,10,0]) spring_mount();
-spring();
-translate([15,0,0])rotate([0,0,-90]) link(60,2);
-translate([25,0,0])rotate([0,0,-90]) link(60,2);
+//translate([15,10,0]) spring_mount();
+//spring();
+//translate([15,0,0])rotate([0,0,-90]) link(60,2);
+//translate([25,0,0])rotate([0,0,-90]) link(60,2);
 
 
 module hjul() {
