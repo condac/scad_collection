@@ -30,10 +30,13 @@ rod_ws = 30;
 fn = 32;
 
 // Parts you need to print
-rotate([0,-90,0]) mirror([0,1,0]) mount1(); // 2pcs
+//rotate([0,-90,0]) mirror([0,1,0]) mount1(); // 2pcs
 //rotate([0,-90,0]) mirror([0,0,0]) mount1(); // 2pcs
 //rotate([0,-90,0]) xmotor(); // 1pcs
 //rotate([0,90,0]) ymotor(); // 1pcs
+XY_block(); // 4pcs
+rotate([0,180,0]) XY_block_plate(); // 4pcs
+XY_block_plate2(); // 4pcs
  // 4pcs https://www.youmagine.com/designs/open-xy-blocks-with-adjustable-belt-tension-for-original-ultimaker-8mm-gantry-rods
 
 
@@ -64,6 +67,43 @@ color("red")translate([-box_x/2,-box_y/2,0]) rotate([0,0,90]) mirror([0,0,0]) %m
 
 color("red")translate([box_x/2-rod_ws-20-20,-box_y/2-wood_t,0]) %xmotor();
 color("red")translate([box_x/2+wood_t,-box_y/2+rod_ws+20+20,0]) rotate([0,0,90]) %ymotor();
+}
+
+b_x = 24;
+b_y = 30;
+b_z = 10;
+brass_d = 11;
+
+module XY_block() {
+    $fn = 64;
+
+    difference() {
+        translate([0, -11 , 0]) cube([b_x, b_y, b_z]);
+        translate([0 , 0 , -0.5]) rotate([0,90,0]) cylinder(d= brass_d, h = 50);
+        translate([b_x/2, 0 , -0.5]) rotate([-90,0,0]) cylinder(d= small_rod_d, h = 50);
+        XY_block_screwcut();
+    }
+}
+
+module XY_block_plate() {
+    $fn = 64;
+    difference() {
+        translate([0, -11 , 0]) cube([b_x, b_y, b_z-4]);
+        translate([0 , 0 , -0.5]) rotate([0,90,0]) cylinder(d= brass_d, h = 50);
+        translate([b_x/2, 0 , -0.5]) rotate([-90,0,0]) cylinder(d= small_rod_d, h = 50);
+        XY_block_screwcut();
+    }
+    
+}
+module XY_block_plate2() {
+    $fn = 64;
+    
+    
+}
+module XY_block_screwcut() {
+    translate([b_x/2,-8,-50]) cylinder(d=2.9, h = 100);
+    translate([b_x-4, 12,-50]) cylinder(d=2.9, h = 100);
+    translate([4    , 12,-50]) cylinder(d=2.9, h = 100);
 }
 module xmotor() {
     x = 20;

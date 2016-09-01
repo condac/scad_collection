@@ -1,14 +1,12 @@
 cross_rod_spaceing = 18;
-cross_rod_diameter = 6;
+cross_rod_diameter = 8;
 //cross_rod_holder_diameter = 12.1;
-bearing_diameter = 12.1;
+bearing_diameter = 15.1;
 bearing_length = 19*2;
-bearing_wall = 2;
+bearing_wall = 3;
 
 
-cube_x = 19*2 +4;
-cube_y = 19*2 +2;
-cube_z = 18+12+4 +30;
+
 fn = 30; // resolution of cylinders
 
 // small extruder coolingfan
@@ -17,6 +15,9 @@ ex_fan_h = 8;
 ex_fan_space = 50/2;
 ex_fan_hole_dist = 24;
 
+cube_x = 19*2 +4;
+cube_y = bearing_diameter+bearing_wall*2+8+ex_fan_xy/2;
+cube_z = 18+12+4 +30 +bearing_diameter/2 -4;
 // Larger print cooling fan
 
 pr_fan_xy = 40;
@@ -27,7 +28,7 @@ pr_fan_hole_dist = 24;
 
 ex_height = 6; //Height of extrudermount relative to lower rod
 ex_x = bearing_diameter/2+bearing_wall+8;
-ex_y = 16;
+ex_y = bearing_diameter/2+bearing_wall+8;
 // not visible helping parts
 //Rods
 %translate([0,100,0]) rotate([90,0,0]) cylinder(d=cross_rod_diameter, h= 200, $fn=fn);
@@ -59,8 +60,8 @@ difference() {
     //fan mount
     translate([10,50,-13]) rotate([90,0,0]) color("cyan") cylinder(d=3, h= 200, $fn=fn);
     //Material saving
-    translate([-50,8,ex_height+2]) cube([100,50,50]);
-    translate([-50,-50,-58]) cube([100,50,50]);
+    translate([-50,ex_y-8,bearing_diameter/2+bearing_wall]) cube([100,50,50]);
+    translate([-50,-50+ex_y-ex_fan_xy/2,-58]) cube([100,50,50]);
     translate([ex_x,-20,-50+ex_height+2]) cube([100,100,50]);
 }
 
@@ -102,7 +103,7 @@ module e3d() {
     c6_d = 12;
     c6_h = 1.5;
     c7_d = 24;
-    c7_h = 26;
+    c7_h = 26.5;
     
     c_total_h = c1_h+c2_h+c3_h+c4_h+c5_h+c6_h+c7_h;
     total_h = 63; // Total length of the e3d
@@ -133,13 +134,18 @@ module e3d_cut() {
         
     
     //translate([0,-0,0]) ex_fan();
-    translate([0,0,-4-6-8-13 +2]) rotate([0,0,90]) fan_cut();
+    translate([0,0,-4-6-8-13 +1]) rotate([0,0,90]) fan_cut();
+    
+    // mount cut
+    mount_hole_dist = 16;
+    translate([-50 , mount_hole_dist/2 , -7 ]) rotate([0,90,0])cylinder(d=2.9, h = 100, $fn=fn);
+    translate([-50 , -mount_hole_dist/2 , -7 ]) rotate([0,90,0])cylinder(d=2.9, h = 100, $fn=fn);
 }
 
 module fan_cut() {
     
     hull() {
-        translate([-ex_fan_xy/2,ex_fan_space,-ex_fan_xy/2]) ex_fan();
+        //translate([-ex_fan_xy/2,ex_fan_space,-ex_fan_xy/2]) ex_fan();
         translate([-ex_fan_xy/2,50+ex_fan_space,-ex_fan_xy/2]) ex_fan();
     }
     hull() {
@@ -162,7 +168,7 @@ module e3d_cut_extruder() {
     c3_d = 16.2;
     c3_h = 6;
     c4_d = 24;
-    c4_h = 26;
+    c4_h = 28;
     
     c_total_h = c1_h+c2_h+c3_h+c4_h;
     total_h = 63; // Total length of the e3d
@@ -189,11 +195,11 @@ module e3d_cut_extruder_hull() {
     c1_d = 16.2;
     c1_h = 4; // 3.7
     c2_d = 12.2;
-    c2_h = 6;
+    c2_h = 5.5;
     c3_d = 16.2;
     c3_h = 6;
     c4_d = 24;
-    c4_h = 26;
+    c4_h = 28;
     
     c_total_h = c1_h+c2_h+c3_h+c4_h;
     total_h = 63; // Total length of the e3d
