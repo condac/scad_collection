@@ -1,17 +1,30 @@
 // main-chassie
 
-%translate([28, -65, 0])  rotate([0,0,180]) import("main.stl", convexity=10);
+//%translate([28, -65, 0])  rotate([0,0,180]) import("main.stl", convexity=10);
+translate([28+28+28+15, -20, -91])  rotate([-90,0,0]) rotate([0,0,180]) %import("body.stl", convexity=10);
 
+long = true;
+long_extra = 42; // set to 0 if short 42 if long battery
+long_extra2 = 17; // set to 0 if short 17 if long battery
+//long = false;
 
 //batteri
 batteri_x = 48;
-batteri_y = 96.5;
+batteri_y = 96.5+long_extra;
 batteri_z = 28;
 b_offset_z = 2; // höjden batteriet ligger på, det som blir basens tjocklek i botten
 
+if (long) {
+    echo("long");
+    batteri_y = 96.5+long_extra;
+} else {
+    echo("short");
+    batteri_y = 96.5; // 138mm för lång ack
+}
+
 // bas
 b_x = 53;
-b_y = 135;
+b_y = 135+long_extra2;
 b_z = 14;
 
 bakre_wall = 6;
@@ -88,11 +101,14 @@ module main_chassie() {
 module plattan() {
     
     hull() {
-        translate([p_x-4, p_y-4, 0]) cylinder(r=4, h=p_z);
-        translate([p_x-4, p_y-34, 0]) cylinder(r=4, h=p_z);
-        translate([0, p_bak_offset, 0]) cube([p_b_x, p_y-p_bak_offset, p_z]);
-        translate([0, p_bak_offset, 0]) cube([1,p_y-p_bak_offset+11,p_z]);
+        translate([p_x-4, p_y-4+long_extra2, 0]) cylinder(r=4, h=p_z);
+        translate([p_x-4, p_y-34+long_extra2, 0]) cylinder(r=4, h=p_z);
+        translate([0, p_bak_offset+long_extra2, 0]) cube([p_b_x, p_y-p_bak_offset, p_z]);
+        translate([0, p_bak_offset+long_extra2, 0]) cube([1,p_y-p_bak_offset+11,p_z]);
+        
+        
     }
+    translate([0, p_bak_offset, 0]) cube([p_b_x-4, p_y-p_bak_offset, p_z]);
     
 }
 
