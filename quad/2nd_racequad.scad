@@ -48,9 +48,9 @@ back_mount_angle = -40;
 arm_mount_x = 20;
 arm_mount_y = 20;
 
-translate([0,0,p3_zw+0.1]) p1();
+translate([0,0,p3_zw+0.1]) p1(); // also known as top plate
 
-translate([0,0,-p3_z]) p3();
+translate([0,0,-p3_z]) p3(); // also known as main plate
 
 //visual();
 translate([0,0,+p3_zw-7.5]) color("red") %arms_hover();
