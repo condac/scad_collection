@@ -1,7 +1,8 @@
-// Kompost gångjärn
+// Kompost gångjärn skapad 2015 juni
+//                  rättad 2016 första har spruckit
 
 bas_x = 32;
-bas_y = 51;
+bas_y = 53;
 bas_z = 11;
 rod_h = 30;
 
@@ -19,8 +20,8 @@ uthang = 20;
 framhang = 20;
 hanghojd = 42; // totala höjden på objektet
 
-f_clip = 27; // avstånd från framhang till fästklipps
-f_clip_x = 2; // hur stor ihakningen är i klippet
+f_clip = 29; // avstånd från framhang till fästklipps
+f_clip_x = 3; // hur stor ihakningen är i klippet
 
 fn = 50; // upplösning på hål
 

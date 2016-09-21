@@ -1,10 +1,10 @@
 cross_rod_spaceing = 18;
 cross_rod_diameter = 8;
 //cross_rod_holder_diameter = 12.1;
-bearing_diameter = 15.1;
+bearing_diameter = 15.3;
 bearing_length = 19*2;
 bearing_wall = 3;
-
+rod_block = bearing_diameter+bearing_wall*2;
 
 
 fn = 30; // resolution of cylinders
@@ -16,7 +16,7 @@ ex_fan_space = 50/2;
 ex_fan_hole_dist = 24;
 
 cube_x = 19*2 +4;
-cube_y = bearing_diameter+bearing_wall*2+8+ex_fan_xy/2;
+cube_y = rod_block+8+ex_fan_xy/2;
 cube_z = 18+12+4 +30 +bearing_diameter/2 -4;
 // Larger print cooling fan
 
@@ -42,33 +42,54 @@ ex_y = bearing_diameter/2+bearing_wall+8;
 //%ex_fan();
 //%e3d_cut();
 
-%translate([ex_x,-10,-52]) rotate([0,0,-90]) import("RightLongDuct.STL", convexity=10);
+//%translate([ex_x,-10,-52]) rotate([0,0,-90]) import("RightLongDuct.STL", convexity=10);
 
 
 //Main block
-difference() {
-    translate([-bearing_diameter/2-bearing_wall,-bearing_diameter/2-bearing_wall,-cube_z+cross_rod_spaceing+bearing_diameter/2+bearing_wall]) cube([cube_x,cube_y,cube_z]);
-    
-    
-    translate([ex_x,ex_y,ex_height]) %e3d();
-    translate([ex_x,ex_y,ex_height])  e3d_cut();
-    
-    // bearing holes
-    translate([-100,0,cross_rod_spaceing]) rotate([0,90,0]) color("green") cylinder(d=bearing_diameter, h= 200, $fn=fn);
-    translate([0,50,0]) rotate([90,0,0]) color("cyan") cylinder(d=bearing_diameter, h= 200, $fn=fn);
-    
-    //fan mount
-    translate([10,50,-13]) rotate([90,0,0]) color("cyan") cylinder(d=3, h= 200, $fn=fn);
-    //Material saving
-    translate([-50,ex_y-8,bearing_diameter/2+bearing_wall]) cube([100,50,50]);
-    translate([-50,-50+ex_y-ex_fan_xy/2,-58]) cube([100,50,50]);
-    translate([ex_x,-20,-50+ex_height+2]) cube([100,100,50]);
+main_block();
+
+// fastening clamp
+//klamma();
+
+module main_block() {
+    difference() {
+        union() {
+            difference() {
+                union() {
+                translate([-bearing_diameter/2-bearing_wall,-bearing_diameter/2-bearing_wall,-cube_z+cross_rod_spaceing+bearing_diameter/2+bearing_wall]) cube([cube_x,cube_y,cube_z]);
+                     
+                }
+            
+                translate([ex_x,ex_y,ex_height]) %e3d();
+                translate([ex_x,ex_y,ex_height])  e3d_cut();
+            
+                // bearing holes
+                translate([-100,0,cross_rod_spaceing]) rotate([0,90,0]) color("green") cylinder(d=bearing_diameter, h= 200, $fn=fn);
+                translate([0,50,0]) rotate([90,0,0]) color("cyan") cylinder(d=bearing_diameter, h= 200, $fn=fn);
+                
+                //fan mount
+                translate([10,50,-13]) rotate([90,0,0]) color("cyan") cylinder(d=3, h= 200, $fn=fn);
+                //Material saving
+                translate([-50,-20,bearing_diameter/2+bearing_wall]) cube([100,100,50]);
+                translate([-50,-50+ex_y-ex_fan_xy/2,-58]) cube([100,50,50]);
+                translate([ex_x,-20,-50+ex_height+2]) cube([100,100,100]);
+            }
+            translate([-rod_block/2,-18,-rod_block/2-cross_rod_spaceing]) cube([bearing_length,rod_block,rod_block]);
+        }
+        // bearing holes
+        translate([-100,-18+rod_block/2,-cross_rod_spaceing]) rotate([0,90,0]) color("green") cylinder(d=bearing_diameter, h= 200, $fn=fn);
+        translate([0,50,0]) rotate([90,0,0]) color("cyan") cylinder(d=bearing_diameter, h= 200, $fn=fn);
+    }
 }
 
 
 
-
-
+module klamma() {
+    difference() {
+        cube([11, 25, 8]) ;
+        translate([11 , 25/2 , 11])  e3d_cut();
+    }
+}
 
 module ex_fan() {
     //extruder fan

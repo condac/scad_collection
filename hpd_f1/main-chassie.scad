@@ -1,11 +1,11 @@
 // main-chassie
 
-//%translate([28, -65, 0])  rotate([0,0,180]) import("main.stl", convexity=10);
-translate([28+28+28+15, -20, -91])  rotate([-90,0,0]) rotate([0,0,180]) %import("body.stl", convexity=10);
+%translate([28, -65, 0])  rotate([0,0,180]) import("main.stl", convexity=10);
+//translate([28+28+28+15, -20, -91])  rotate([-90,0,0]) rotate([0,0,180]) %import("body.stl", convexity=10);
 
 long = true;
 long_extra = 42; // set to 0 if short 42 if long battery
-long_extra2 = 17; // set to 0 if short 17 if long battery
+long_extra2 = 18; // set to 0 if short 18 if long battery
 //long = false;
 
 //batteri
@@ -88,6 +88,13 @@ module main_chassie() {
             // sidofästen
             translate([b_x/2, sf_y, 0]) mirror([0,0,0]) sido_fasten();
             translate([-b_x/2, sf_y, 0]) mirror([1,0,0]) sido_fasten();
+            
+            // fäste för plattan med dämparen
+            translate([28, 32, p_offset_z+p_z]) hoger_faste();
+            translate([-28, 32, p_offset_z+p_z]) vanster_faste();
+            
+            // sidodämparen
+            translate([0, 0, p_offset_z+p_z])sido_dampare();
         }
         translate([-batteri_x/2, bakre_wall, b_offset_z]) batteri();
         translate([-batteri_x/2, bakre_wall+batteri_y+lb_wall, b_offset_z]) lilla_bad();
@@ -95,6 +102,10 @@ module main_chassie() {
         //utsågning för skruvar i framfäste
         translate([0,b_y,0]) front_mount_cut();
         translate([0,b_y,0]) mirror([1,0,0]) front_mount_cut();
+        
+        bak_screw_cut();
+        
+        
     }
 }
 
@@ -109,6 +120,12 @@ module plattan() {
         
     }
     translate([0, p_bak_offset, 0]) cube([p_b_x-4, p_y-p_bak_offset, p_z]);
+    
+    hull() {
+        translate([b_x/2-1,p_bak_offset,-2]) cube([1, b_y-p_bak_offset, 2]);
+        translate([b_x/2+1,p_bak_offset,0]) cube([1, b_y-p_bak_offset, 2]);
+        translate([b_x/2-3,p_bak_offset,0]) cube([1, b_y-p_bak_offset, 2]);
+    }
     
 }
 
@@ -146,7 +163,10 @@ module sido_fjadrar() {
 }
 
 module sido_dampare() {
-    
+    difference() {
+        translate([17,0,0]) cube([9,6,11]);
+        translate([17+9/2, 3, 3+0.01]) flat_screw_tap(l=8);
+    }
 }
 
 module flat_screw_tap(l = 10) {
@@ -198,4 +218,32 @@ module front_mount_cut() {
     translate([fm_screw_dist_x/2, -fm_y-3, 5]) rotate([0,90,0]) rotate([-90,0,0])  cylinder(d=7, h=6, $fn=6);
     translate([fm_screw_dist_x/2, -fm_y-3, 5+fm_screw_dist_z]) rotate([0,90,0]) rotate([-90,0,0])  cylinder(d=7, h=6, $fn=6);
     
+}
+
+module hoger_faste() {
+    hh = 16;
+    difference() {
+        hull() {
+            translate([0,-2,0]) cylinder(d=10, h=hh);
+            translate([0,4,0]) cylinder(d=10, h=hh);
+        }
+        flat_screw_tap(l = hh);
+    }
+}
+
+module vanster_faste() {
+    hh = 16;
+    difference() {
+        hull() {
+            translate([0,-2,0]) cylinder(d=10, h=hh);
+            translate([0,14,0]) cylinder(d=10, h=hh);
+        }
+        flat_screw_tap(l = hh);
+        translate([0,13,0]) flat_screw_tap(l = hh);
+    }
+}
+
+module bak_screw_cut() {
+    translate([0,10-0.01,5]) rotate([90,0,0]) flat_screw_tap(l = 10);
+    translate([0,bakre_wall+0.01,5]) rotate([90,0,0]) cylinder(d=7, h=3, $fn=6);
 }

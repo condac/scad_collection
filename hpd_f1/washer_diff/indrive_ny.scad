@@ -27,7 +27,7 @@ module oring() {
     }
 }
 
-%translate([0,0,3.5]) bricka();
+//%translate([0,0,3.5]) bricka();
 module extramaterial() {
     difference() {
         union() { 
