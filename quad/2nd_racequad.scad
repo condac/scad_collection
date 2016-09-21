@@ -53,7 +53,7 @@ translate([0,0,p3_zw+0.1]) p1(); // also known as top plate
 translate([0,0,-p3_z]) p3(); // also known as main plate
 
 //visual();
-translate([0,0,+p3_zw-7.5]) color("red") %arms_hover();
+//translate([0,0,+p3_zw-7.5]) color("red") %arms_hover();
 
 module visual() {
     //visual aids
@@ -127,6 +127,10 @@ module shared_cut() {
     
         translate([16/2, -p1_y/2+p3_wall+26, -1]) cylinder(d=screw_d, h=10);
         translate([-16/2, -p1_y/2+p3_wall+26, -1]) cylinder(d=screw_d, h=10);
+    
+        //lid screws
+        translate([p1_x/2-5, -p1_y/2+5, -1]) cylinder(d=screw_d, h=p3_zw+p3_z+2);
+        translate([-p1_x/2+5, -p1_y/2+5, -1]) cylinder(d=screw_d, h=p3_zw+p3_z+2);
 }
 
 module p1_cut() {
@@ -135,11 +139,11 @@ module p1_cut() {
 
         // logo
         linear_extrude(height=2)
-        oshw_logo_2d(25);
+        rotate([0,0,180]) oshw_logo_2d(25);
 
         //xt60 hole
         translate([8,60,-1]) rotate([0,0,90]) slot(9,16,5);
-        
+        translate([0,60,-1]) rotate([0,0,0]) slot(9,8,5);
 
     
         //Battery straps
@@ -280,8 +284,11 @@ module p3() {
             hull() {
                 translate([front_mount_x, front_mount_y, 0]) rotate([0,0,front_mount_angle])arm_mount(arm_w);
                 translate([-front_mount_x, front_mount_y, 0]) rotate([0,0,180-front_mount_angle])arm_mount(arm_w);
-                }
+            }
             
+            //lid screws
+            translate([p1_x/2-5, -p1_y/2+5, 0]) cylinder(d=10, h=p3_zw+p3_z);
+            translate([-p1_x/2+5, -p1_y/2+5, 0]) cylinder(d=10, h=p3_zw+p3_z);
         }
         // cut to make sidewalls
         //translate([-p3_x/2+p3_wall, -p3_y/2+p3_wall, p3_z]) roundedcube(p3_x-p3_wall*2, p3_y-p3_wall*2, p3_z+p3_zw, 5);
