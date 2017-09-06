@@ -1,3 +1,13 @@
+// Quadcopter by Bengt "condac" 2016
+include <oshw.scad>;
+
+//resolution
+$fs=0.5;
+$fa=9;
+
+// Screw holes
+screw_d = 2.95;
+
 //Main plate 
 p1_x = 58;
 p1_y = 160;
@@ -131,7 +141,15 @@ module p1() {
         
     }
 }
-
+module p2p_holes(_d=3) {
+    x_d = 46;
+    y_d = 76;
+    
+    translate([x_d/2, y_d/2, 0]) cylinder(d=_d, h= 50);
+    translate([x_d/2, -y_d/2, 0]) cylinder(d=_d, h= 50);
+    translate([-x_d/2, y_d/2, 0]) cylinder(d=_d, h= 50);
+    translate([-x_d/2, -y_d/2, 0]) cylinder(d=_d, h= 50);
+}
 module p2() {
     //Upper board
     difference() {
@@ -166,6 +184,7 @@ module p2() {
         translate([l/2,-40,-1]) rotate([0,0,90]) slot(3,l,5);
         translate([l/2,20,-1]) rotate([0,0,90]) slot(3,l,5);
         translate([l/2,-20,-1]) rotate([0,0,90]) slot(3,l,5);
+        p2p_holes();
         
     }
 

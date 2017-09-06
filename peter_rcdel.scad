@@ -10,9 +10,9 @@ h1_w = 8.5; // avstånd mellan hålen
 h2_w = 6;
 h3_w = 13; // kanske typ 12.8
 
-h1_d = 2;
-h2_d = 2;
-h3_d = 1.8;
+h1_d = 2.5;
+h2_d = 2.5;
+h3_d = 2;
 
 h1_h = 100;
 
@@ -22,11 +22,16 @@ h11_h = 3;
 h12_d = 2;
 h12_h = 1.5;
 
-h13_d = 4;
+h13_d = 4.5;
 h13_h = 1.5;
 
 c1_d = 6.5;
 c1_h = h11_h + h12_h + h13_h;
+
+v_x = 9/2;
+v_y = 8;
+v_w = 10;
+v_l = 11;
 
 x = 17;
 y = 26;
@@ -60,6 +65,16 @@ union() {
         // tredje hålen
         translate([h3_w/2, h3_l, 0]) cylinder(d=h3_d, h=h1_h);
         translate([-h3_w/2, h3_l, 0]) cylinder(d=h3_d, h=h1_h);
+        
+        // sidoväggar
+        translate([v_x, v_y, 0]) cube([v_w, v_l, z]);
+        translate([-v_x-v_w, v_y, 0]) cube([v_w, v_l, z]);
+        
+        // mitträmsa
+        hull() {
+            translate([0, v_y+1, 0]) cylinder(d=2, h=z);
+            translate([0, v_y+v_l-1, 0]) cylinder(d=2, h=z);
+        }
         
     }
 
