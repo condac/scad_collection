@@ -34,8 +34,8 @@ ex_y = bearing_diameter/2+bearing_wall+8;
 %translate([0,100,0]) rotate([90,0,0]) cylinder(d=cross_rod_diameter, h= 200, $fn=fn);
 %translate([-100,0,cross_rod_spaceing]) rotate([0,90,0]) cylinder(d=cross_rod_diameter, h= 200, $fn=fn);
 // Bearings
-%translate([0,0,cross_rod_spaceing]) rotate([0,90,0]) color("green") cylinder(d=bearing_diameter, h= bearing_length+2, $fn=fn);
-%translate([0,bearing_length-bearing_diameter/2-bearing_wall+1,0]) rotate([90,0,0]) color("cyan") cylinder(d=bearing_diameter, h= bearing_length+2, $fn=fn);
+//%translate([0,0,cross_rod_spaceing]) rotate([0,90,0]) color("green") cylinder(d=bearing_diameter, h= bearing_length+2, $fn=fn);
+//%translate([0,bearing_length-bearing_diameter/2-bearing_wall+1,0]) rotate([90,0,0]) color("cyan") cylinder(d=bearing_diameter, h= bearing_length+2, $fn=fn);
 
 
 //%e3d();
@@ -46,10 +46,14 @@ ex_y = bearing_diameter/2+bearing_wall+8;
 
 
 //Main block
-main_block();
+//main_block();
 
+new_block();
+
+//bearing_holder();
 // fastening clamp
 //klamma();
+//half_bearing();
 
 module main_block() {
     difference() {
@@ -86,8 +90,8 @@ module main_block() {
 
 module klamma() {
     difference() {
-        cube([11, 25, 8]) ;
-        translate([11 , 25/2 , 11])  e3d_cut();
+        cube([10.5, 25, 14]) ;
+        translate([11 , 25/2 , 14])  e3d_cut();
     }
 }
 
@@ -97,7 +101,7 @@ module ex_fan() {
     cube([ex_fan_xy,ex_fan_h,ex_fan_xy]);
 }
 
-translate([-bearing_diameter/2-bearing_wall,ex_y,0]) rotate([0,0,90])%pr_fan();
+//translate([-bearing_diameter/2-bearing_wall,ex_y,0]) rotate([0,0,90])%pr_fan();
 module pr_fan() {
     //printer fan
     
@@ -257,4 +261,99 @@ module e3d_cut_extruder_hull() {
         
         
     }
+}
+%half_bearing();
+module half_bearing(length = 30) {
+    l = 30;
+    w = 2*2;
+    d1 = 15;
+    rod = 8;
+    fins = 10;
+    fin_w =2;
+    
+    
+    rotate([-90,0,0]) difference() {
+        union() {
+            tube(od=d1, id=d1-w, length=l);
+            for (a =[0:360/fins:360]) {
+                rotate([0,0,a]) translate([rod/2,-fin_w/2,0]) cube([d1/2-rod/2-1, fin_w, l]);
+            
+            }
+        }
+        translate([-d1/2,-1.1,-1]) cube([d1+2, d1+2, l+2]);
+        cylinder(d1=rod+2, d2=rod, h=1);
+        translate([0,0,l-1]) cylinder(d2=rod+2, d1=rod, h=1);
+        
+        //oil hole
+        translate([0,0,l/2]) rotate([90,0,0])  cylinder(d=2, h=d1);
+    }
+    
+}
+module tube(od=10, id=5, length = 10) {
+    difference() {
+        union() {
+            cylinder(d=od, h=length);
+            
+        }
+        translate([0,0,-1]) cylinder(d=id, h=length+2);
+        
+    }
+    
+}
+
+translate([0,-25/2,0 ]) rotate([0,180,0]) color("red") % bearing_holder(length = 45);
+ translate([25/2,-0,0 ])color("red") translate([0,0,cross_rod_spaceing])rotate([180,0,0]) rotate([0,0,90]) rotate([0,180,0]) %bearing_holder(length = 45);
+module bearing_holder(length = 30, screw_d = 3) {
+    holder_x = 25;
+    difference() {
+        union() {
+            translate([-holder_x/2,0,1]) cube([holder_x,2+length+2, 8]);
+        }
+        translate([0,1.5,0]) rotate([-90,0,0]) cylinder(d=15.5, h=length+1);
+        translate([0,-1,0]) rotate([-90,0,0]) cylinder(d=10, h=length+30);
+        
+        // mounting screw holes
+        translate([15.5/2+2, 5 ,0]) cylinder(d=screw_d, h=40);
+        translate([15.5/2+2, length+4-5 ,0]) cylinder(d=screw_d, h=40);
+        translate([-15.5/2-2, 5 ,0]) cylinder(d=screw_d, h=40);
+        translate([-15.5/2-2, length+4-5 ,0]) cylinder(d=screw_d, h=40);
+    }
+    
+}
+
+module new_block() {
+    //cross_rod_spaceing
+    bearing_l = 45;
+    
+    difference() {
+        union() {
+            translate([0,-25/2,0 ]) bearing_holder(length = bearing_l);
+            translate([25/2,0,cross_rod_spaceing]) rotate([0,0,90]) rotate([0,180,0]) bearing_holder(length = bearing_l);
+            hull(){
+                translate([-24,25/2,1]) cube([1,25,20]) ;
+                translate([-24+12,25/2,1]) cube([1,20,20]) ;
+            }
+            hull(){
+                translate([-24+12,25/2,1+8]) cube([1,20,20-8]) ;
+                translate([-24+12+11,25/2,1+8]) cube([1,20-8,20-8-4]) ;
+            }
+            hull(){
+                translate([-24+12+11+1,25/2,1+8]) cube([1,20-8,20-8-4]);
+                translate([0+25/2-1,10,1+8]) cube([1, 25/2, 1]);
+                
+            }
+            
+        }
+        //translate([0,1.5,0]) rotate([-90,0,0]) cylinder(d=15.5, h=bearing_l+1);
+        translate([-25,25,20]) rotate([0,0,180])  e3d_cut();
+        //hål runt stången
+        translate([25,0,cross_rod_spaceing]) rotate([0,-90,0]) cylinder(d=10, h=50);
+    }
+    
+    translate([-25,25,20]) %e3d();
+    //%e3d_cut();cube([11, 25, 12]) ;
+    translate([-25,25,20]) translate([-11,-25/2,-14]) %klamma();
+    %translate([0,2,0]) half_bearing(length=bearing_l);
+    %translate([0,2,0]) rotate([0,180,0]) half_bearing(length=bearing_l);
+    
 }
