@@ -2,10 +2,10 @@
 // Free for non-comercial use
 
 
-diameter = 110; // Use 160mm for making about 1kg cheese, 0.5kg cheese around 114mm
-height = 100; // Use 140mm for full size
+diameter = 95; // Use 160mm for making about 1kg cheese, 0.5kg cheese around 114mm
+height = 120; // Use 140mm for full size
 
-wall = 3;
+wall = 2;
 
 hole_d = 3;
 hole_dist = 10;

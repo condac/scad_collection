@@ -1,13 +1,14 @@
 #include "Keyboard.h"
 
-int button = 2;
-
+#define PIN  3
+#define LED  15
 long counter;
 
 bool keypress;
 
 void setup() {
-  pinMode(button, INPUT_PULLUP);
+  pinMode(PIN, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
   // open the serial port:
   Serial.begin(9600);
   // initialize control over the keyboard:
@@ -19,24 +20,8 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if(digitalRead(button) == LOW) {
-    counter = millis()+100;
-  } 
-  if (counter < millis()) {
-    if (keypress) {
-      Keyboard.releaseAll();
-      keypress = false;
-      Serial.println("release key");
-      
-    }
-    
-    
-  } else {
-    if (!keypress) {
-      keypress = true;
-      Keyboard.press(KEY_F14);
-      Serial.println("Press key!");
-    }
-  }
+  int state = digitalRead(PIN);
+  digitalWrite(LED, state);
+  
 
 }
