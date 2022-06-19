@@ -8,8 +8,8 @@ $fa = 5.1;
 flash_d = 38.1;
 
 difference() {
-    //lightsaber_bottom();
-    lightsaber_top();
+    lightsaber_bottom();
+    //lightsaber_top();
     translate([0,0,5]) cylinder(d=16.5, h = 780);
 }
 
