@@ -8,7 +8,7 @@ hilt();
 
 //import_stl("test.stl", convexity = 5);
 
-translate([0,0,body_h-100]) color("red") cylinder(d=23, h=800);
+//translate([0,0,body_h-100]) color("red") cylinder(d=23, h=570);
 
 translate([50,0,20]) color("blue") cylinder(d=18, h=70);
 
@@ -32,10 +32,10 @@ module hilt() {
         }
         translate([0,0,body_h-100]) cylinder(d=25, h=400);
         
-        rotate([0,0,90*0]) translate([body_d/2-8,0,body_h-25]) rotate([0,90,0]) cylinder2(d=8, h=10, y=10);
-        rotate([0,0,90*1]) translate([body_d/2-8,0,body_h-25]) rotate([0,90,0]) cylinder2(d=8, h=10, y=10);
-        rotate([0,0,90*2]) translate([body_d/2-8,0,body_h-25]) rotate([0,90,0]) cylinder2(d=8, h=10, y=10);
-        rotate([0,0,90*3]) translate([body_d/2-8,0,body_h-25]) rotate([0,90,0]) cylinder2(d=8, h=10, y=10);
+        rotate([0,0,45+90*0]) translate([body_d/2-8,0,body_h-25]) rotate([0,90,0]) cylinder2(d=8, h=10, y=10);
+        rotate([0,0,45+90*1]) translate([body_d/2-8,0,body_h-25]) rotate([0,90,0]) cylinder2(d=8, h=10, y=10);
+        rotate([0,0,45+90*2]) translate([body_d/2-8,0,body_h-25]) rotate([0,90,0]) cylinder2(d=8, h=10, y=10);
+        rotate([0,0,45+90*3]) translate([body_d/2-8,0,body_h-25]) rotate([0,90,0]) cylinder2(d=8, h=10, y=10);
     }
 }
 
@@ -43,11 +43,12 @@ module hilt() {
 
 module klor() {
     z=4;
+    dd= 50;
     rotate([90,0,0]) difference() {
-        translate([-5,0,-z/2]) cylinder(d=body_d, h=z);
+        translate([-5,0,-z/2]) cylinder(d=dd, h=z);
         
-        translate([4,0,-z/2-1]) cylinder(d=body_d, h=z+2);
-        translate([4,-4,-z/2-1]) cylinder(d=body_d, h=z+2);
+        translate([6,10,-z/2-1]) cylinder(d=dd, h=z+2);
+        translate([4,-0,-z/2-1]) cylinder(d=dd, h=z+2);
     }
 }
 
